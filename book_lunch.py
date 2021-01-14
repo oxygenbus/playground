@@ -79,7 +79,7 @@ def book_lunch():
                 elem = driver.find_element_by_xpath('//*[@id="Select_0_placeholder"]')
                 elem.click()
 
-                elem = driver.find_element_by_xpath('//*[@id="Select_0"]/ul/li[7]')
+                elem = driver.find_element_by_xpath('//*[@id="Select_0"]/ul/li[5]')
                 elem.click()
 
                 elem = driver.find_element_by_xpath('//*[@id="form-container"]/div/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div[2]/div/div/input')
@@ -120,7 +120,7 @@ def book_lunch():
     driver.quit()
 
 if __name__ == '__main__':
-    utc_time = "03:30"
+    utc_time = "02:35"
     schedule.every().monday.at(utc_time).do(book_lunch)
     schedule.every().tuesday.at(utc_time).do(book_lunch)
     schedule.every().wednesday.at(utc_time).do(book_lunch)
