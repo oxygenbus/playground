@@ -66,6 +66,7 @@ def book_lunch():
     password = base64.b64decode(os.environ['password']).decode("utf-8") 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     driver = webdriver.Chrome(options=chrome_options)
@@ -103,7 +104,7 @@ def book_lunch():
                 save_file_before = "screenshot_before_submit.png"
                 save_screenshot(driver, save_file_before, 1800)
 
-                elem = driver.find_element_by_xpath('//*[@id="form-container"]/div/div/div/div/div[1]/div[2]/div[3]/div[1]/button/div')
+                elem = driver.find_element_by_xpath('//*[@id="form-container"]/div/div/div/div/div[1]/div[2]/div[4]/div[1]/button/div')
                 elem.click()
 
                 time.sleep(1)
