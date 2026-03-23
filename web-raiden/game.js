@@ -58,10 +58,10 @@ const STAGES = [
     terrain: 'islands',
     musicHue: 195,
     waves: [
-      { gap: 0.92, enemies: ['grunt','grunt','zigzag','grunt','zigzag','grunt'] },
-      { gap: 0.88, enemies: ['sweeper','grunt','zigzag','sweeper','grunt'] },
-      { gap: 0.84, enemies: ['turret','grunt','turret','zigzag','grunt'] },
-      { gap: 0.8, enemies: ['sweeper','zigzag','gunship','grunt'] },
+      { gap: 0.86, formation: 'vee', enemies: ['grunt','grunt','zigzag','grunt','zigzag','grunt'] },
+      { gap: 0.78, formation: 'leftHook', enemies: ['sweeper','grunt','zigzag','sweeper','grunt','zigzag'] },
+      { gap: 0.72, formation: 'wall', enemies: ['turret','grunt','turret','zigzag','grunt','zigzag'] },
+      { gap: 0.7, formation: 'arc', enemies: ['sweeper','zigzag','gunship','grunt','sweeper'] },
     ],
     miniboss: { kind: 'gunshipElite', label: 'Aegis Interceptor' },
     boss: { kind: 'carrier', label: 'Coastbreaker Carrier', hp: 190 },
@@ -74,10 +74,10 @@ const STAGES = [
     terrain: 'islands',
     musicHue: 320,
     waves: [
-      { gap: 0.86, enemies: ['zigzag','grunt','zigzag','sweeper','grunt','zigzag'] },
-      { gap: 0.82, enemies: ['turret','sweeper','grunt','turret','grunt'] },
-      { gap: 0.8, enemies: ['ace','zigzag','sweeper','ace'] },
-      { gap: 0.76, enemies: ['gunship','grunt','ace','zigzag'] },
+      { gap: 0.82, formation: 'rightHook', enemies: ['zigzag','grunt','zigzag','sweeper','grunt','zigzag'] },
+      { gap: 0.76, formation: 'columns', enemies: ['turret','sweeper','grunt','turret','grunt','zigzag'] },
+      { gap: 0.72, formation: 'vee', enemies: ['ace','zigzag','sweeper','ace','zigzag'] },
+      { gap: 0.68, formation: 'arc', enemies: ['gunship','grunt','ace','zigzag','sweeper'] },
     ],
     miniboss: { kind: 'gunshipElite', label: 'Harrier Command Ship' },
     boss: { kind: 'carrier', label: 'Redwake Flag Carrier', hp: 235 },
@@ -90,10 +90,10 @@ const STAGES = [
     terrain: 'clouds',
     musicHue: 265,
     waves: [
-      { gap: 0.8, enemies: ['zigzag','ace','zigzag','sweeper','ace'] },
-      { gap: 0.76, enemies: ['turret','ace','sweeper','ace','zigzag'] },
-      { gap: 0.74, enemies: ['gunship','sweeper','ace','grunt'] },
-      { gap: 0.7, enemies: ['ace','zigzag','turret','ace','sweeper'] },
+      { gap: 0.74, formation: 'arc', enemies: ['zigzag','ace','zigzag','sweeper','ace','zigzag'] },
+      { gap: 0.7, formation: 'staggered', enemies: ['turret','ace','sweeper','ace','zigzag','ace'] },
+      { gap: 0.66, formation: 'centerRush', enemies: ['gunship','sweeper','ace','grunt','ace'] },
+      { gap: 0.64, formation: 'columns', enemies: ['ace','zigzag','turret','ace','sweeper','zigzag'] },
     ],
     miniboss: { kind: 'stormCore', label: 'Tempest Core' },
     boss: { kind: 'dreadnought', label: 'Storm Dreadnought', hp: 275 },
@@ -106,10 +106,10 @@ const STAGES = [
     terrain: 'clouds',
     musicHue: 220,
     waves: [
-      { gap: 0.74, enemies: ['ace','sweeper','ace','zigzag','ace'] },
-      { gap: 0.72, enemies: ['turret','gunship','grunt','turret','ace'] },
-      { gap: 0.68, enemies: ['sweeper','ace','sweeper','ace','gunship'] },
-      { gap: 0.66, enemies: ['turret','ace','zigzag','ace','turret'] },
+      { gap: 0.68, formation: 'columns', enemies: ['ace','sweeper','ace','zigzag','ace','sweeper'] },
+      { gap: 0.64, formation: 'wall', enemies: ['turret','gunship','grunt','turret','ace','grunt'] },
+      { gap: 0.62, formation: 'leftHook', enemies: ['sweeper','ace','sweeper','ace','gunship','ace'] },
+      { gap: 0.58, formation: 'centerRush', enemies: ['turret','ace','zigzag','ace','turret','ace'] },
     ],
     miniboss: { kind: 'stormCore', label: 'Blackout Reactor' },
     boss: { kind: 'dreadnought', label: 'Nightspike Arsenal', hp: 325 },
@@ -122,10 +122,10 @@ const STAGES = [
     terrain: 'lava',
     musicHue: 24,
     waves: [
-      { gap: 0.68, enemies: ['ace','sweeper','gunship','ace','zigzag'] },
-      { gap: 0.66, enemies: ['turret','gunship','ace','sweeper','grunt'] },
-      { gap: 0.62, enemies: ['gunship','ace','turret','ace'] },
-      { gap: 0.6, enemies: ['ace','sweeper','turret','gunship','ace'] },
+      { gap: 0.62, formation: 'arc', enemies: ['ace','sweeper','gunship','ace','zigzag','sweeper'] },
+      { gap: 0.6, formation: 'columns', enemies: ['turret','gunship','ace','sweeper','grunt','turret'] },
+      { gap: 0.56, formation: 'wall', enemies: ['gunship','ace','turret','ace','gunship','zigzag'] },
+      { gap: 0.54, formation: 'centerRush', enemies: ['ace','sweeper','turret','gunship','ace','turret'] },
     ],
     miniboss: { kind: 'forgeEye', label: 'Forge Eye' },
     boss: { kind: 'overlord', label: 'Molten Bastion', hp: 380 },
@@ -138,10 +138,10 @@ const STAGES = [
     terrain: 'lava',
     musicHue: 15,
     waves: [
-      { gap: 0.62, enemies: ['ace','sweeper','ace','gunship','zigzag','ace'] },
-      { gap: 0.6, enemies: ['turret','gunship','ace','sweeper','turret'] },
-      { gap: 0.58, enemies: ['gunship','ace','turret','gunship'] },
-      { gap: 0.56, enemies: ['ace','sweeper','turret','gunship','ace','sweeper'] },
+      { gap: 0.58, formation: 'staggered', enemies: ['ace','sweeper','ace','gunship','zigzag','ace','sweeper'] },
+      { gap: 0.56, formation: 'wall', enemies: ['turret','gunship','ace','sweeper','turret','ace'] },
+      { gap: 0.52, formation: 'columns', enemies: ['gunship','ace','turret','gunship','ace','turret'] },
+      { gap: 0.5, formation: 'centerRush', enemies: ['ace','sweeper','turret','gunship','ace','sweeper','turret'] },
     ],
     miniboss: { kind: 'forgeEye', label: 'Smelter Citadel Eye' },
     boss: { kind: 'overlord', label: 'Iron Overlord', hp: 445 },
@@ -154,10 +154,10 @@ const STAGES = [
     terrain: 'voidstorm',
     musicHue: 280,
     waves: [
-      { gap: 0.58, enemies: ['ace','gunship','ace','sweeper','ace','turret'] },
-      { gap: 0.56, enemies: ['turret','ace','gunship','turret','ace'] },
-      { gap: 0.54, enemies: ['gunship','ace','sweeper','gunship','ace'] },
-      { gap: 0.52, enemies: ['ace','sweeper','turret','gunship','ace','turret'] },
+      { gap: 0.54, formation: 'arc', enemies: ['ace','gunship','ace','sweeper','ace','turret','gunship'] },
+      { gap: 0.5, formation: 'wall', enemies: ['turret','ace','gunship','turret','ace','sweeper','turret'] },
+      { gap: 0.48, formation: 'columns', enemies: ['gunship','ace','sweeper','gunship','ace','turret','ace'] },
+      { gap: 0.46, formation: 'centerRush', enemies: ['ace','sweeper','turret','gunship','ace','turret','gunship'] },
     ],
     miniboss: { kind: 'forgeEye', label: 'Apex Warden' },
     boss: { kind: 'overlord', label: 'Celestial Tyrant', hp: 520 },
@@ -189,6 +189,9 @@ const state = {
   shake: 0,
   muted: localStorage.getItem(MUTE_KEY) === '1',
   terrainOffset: 0,
+  stageTransition: 0,
+  stageTransitionMode: 'none',
+  bossBanner: 0,
 };
 highEl.textContent = state.highscore;
 if (muteBtn) muteBtn.textContent = state.muted ? '🔇 Sound Off' : '🔊 Sound On';
@@ -352,6 +355,9 @@ function resetGame() {
   state.flash = 0;
   state.shake = 0;
   state.terrainOffset = 0;
+  state.stageTransition = 1.8;
+  state.stageTransitionMode = 'stage';
+  state.bossBanner = 0;
   resetStars();
   running = true;
   paused = false;
@@ -449,11 +455,58 @@ function spawnEnemy(kind, x = rand(20, W - 60), y = -60) {
   state.enemies.push(enemyBase(kind, x, y));
 }
 
+function expandWaveEntries(wave) {
+  if (!wave) return null;
+  const formation = wave.formation || 'random';
+  const laneXs = [84, 156, 228, 300, 372, 444, 516, 588, 648];
+  const entries = wave.enemies.map((kind, i) => {
+    const t = wave.enemies.length <= 1 ? 0.5 : i / (wave.enemies.length - 1);
+    let x = rand(28, W - 88);
+    let y = -60 - i * 24;
+    let delay = 0;
+    if (formation === 'line') {
+      x = lerp(110, W - 110, t) - 22;
+    } else if (formation === 'vee') {
+      const mid = (wave.enemies.length - 1) / 2;
+      const dist = Math.abs(i - mid);
+      x = W / 2 - 30 + (i < mid ? -1 : 1) * dist * 62;
+      y -= dist * 22;
+    } else if (formation === 'wall') {
+      x = laneXs[i % laneXs.length] - 22;
+      y = -70 - Math.floor(i / laneXs.length) * 64;
+      delay = Math.floor(i / laneXs.length) * 0.12;
+    } else if (formation === 'leftHook') {
+      x = 56 + i * 60;
+      y -= i * 18;
+    } else if (formation === 'rightHook') {
+      x = W - 96 - i * 60;
+      y -= i * 18;
+    } else if (formation === 'columns') {
+      x = i % 2 === 0 ? 150 + Math.floor(i / 2) * 76 : W - 220 - Math.floor(i / 2) * 76;
+      y = -70 - Math.floor(i / 2) * 56;
+      delay = (i % 2) * 0.1;
+    } else if (formation === 'arc') {
+      x = lerp(100, W - 100, t) - 22;
+      y -= Math.sin(t * Math.PI) * 78;
+    } else if (formation === 'centerRush') {
+      x = W / 2 - 24 + (i % 2 === 0 ? -1 : 1) * (30 + Math.floor(i / 2) * 40);
+      y -= Math.floor(i / 2) * 34;
+      delay = 0.05 * i;
+    } else if (formation === 'staggered') {
+      x = laneXs[(i * 2) % laneXs.length] - 22;
+      y = -70 - i * 34;
+      delay = (i % 2) * 0.08;
+    }
+    return { kind, x: clamp(x, 18, W - 90), y, delay };
+  });
+  return entries;
+}
+
 function queueWave(index) {
   const wave = state.stage.waves[index];
-  state.queuedWave = wave ? [...wave.enemies] : null;
+  state.queuedWave = expandWaveEntries(wave);
   state.waveGap = wave?.gap ?? 0.9;
-  state.waveSpawnTimer = 0.2;
+  state.waveSpawnTimer = 0.18;
 }
 
 function startNextStage() {
@@ -464,7 +517,9 @@ function startNextStage() {
   }
   state.stage = currentStage();
   state.stagePhase = 'intro';
-  state.phaseTimer = 2.7;
+  state.phaseTimer = 2.9;
+  state.stageTransition = 1.9;
+  state.stageTransitionMode = 'stage';
   state.waveIndex = 0;
   state.queuedWave = null;
   state.boss = null;
@@ -495,6 +550,7 @@ function spawnBoss(kind, label, hp) {
   };
   state.stagePhase = 'boss';
   state.phaseTimer = 999;
+  state.bossBanner = 2.8;
   pushOverlay('WARNING', label, 2.4, 'warning');
   shake(10);
   flash(0.18);
@@ -680,11 +736,13 @@ function loseGame() {
   gameOver = true;
   overlay.classList.remove('hidden');
   panel.innerHTML = `
+    <div class="eyebrow">campaign lost • enemy command survives</div>
     <h1>Mission Failed</h1>
+    <p>Your squadron was downed before the last objective was secured.</p>
     <p>Score: <strong>${state.score}</strong></p>
     <p>High Score: <strong>${state.highscore}</strong></p>
     <p class="hint">Enter or click to launch again</p>
-    <button id="startBtn2">Retry</button>
+    <div class="actions"><button id="startBtn2">Retry Sortie</button></div>
   `;
   const btn = document.getElementById('startBtn2');
   if (btn) btn.addEventListener('click', startGame);
@@ -694,14 +752,26 @@ function winGame() {
   running = false;
   gameOver = true;
   overlay.classList.remove('hidden');
+  const accuracyBonus = state.player ? state.player.lives * 250 + state.player.bombs * 150 : 0;
+  const campaignTotal = state.score + accuracyBonus;
+  if (campaignTotal > state.highscore) {
+    state.highscore = campaignTotal;
+    localStorage.setItem(HIGH_KEY, String(state.highscore));
+  }
   panel.innerHTML = `
+    <div class="eyebrow">campaign complete • seven stages cleared</div>
     <h1>Sky Secured</h1>
-    <p>You cleared all ${STAGES.length} stages.</p>
-    <p>Score: <strong>${state.score}</strong></p>
-    <p>High Score: <strong>${state.highscore}</strong></p>
-    <p class="hint">Enter or click to run it back</p>
-    <button id="startBtn2">Play Again</button>
+    <p>The Celestial Tyrant is gone. Allied carriers now control the corridor from Emerald Coast to Void Apex.</p>
+    <div class="controls endcards">
+      <div><strong>Final Score</strong><span>${state.score}</span></div>
+      <div><strong>Campaign Bonus</strong><span>${accuracyBonus}</span></div>
+      <div><strong>Final Total</strong><span>${campaignTotal}</span></div>
+      <div><strong>High Score</strong><span>${state.highscore}</span></div>
+    </div>
+    <p class="hint">Desktop arcade run complete — Enter or click to fly it again</p>
+    <div class="actions"><button id="startBtn2">New Campaign</button></div>
   `;
+  highEl.textContent = state.highscore;
   const btn = document.getElementById('startBtn2');
   if (btn) btn.addEventListener('click', startGame);
 }
@@ -798,9 +868,9 @@ function updateStageFlow(dt) {
     if (state.queuedWave) {
       state.waveSpawnTimer -= dt;
       if (state.waveSpawnTimer <= 0) {
-        const kind = state.queuedWave.shift();
-        spawnEnemy(kind);
-        state.waveSpawnTimer = state.waveGap;
+        const entry = state.queuedWave.shift();
+        spawnEnemy(entry.kind, entry.x, entry.y);
+        state.waveSpawnTimer = state.waveGap + (entry.delay || 0);
         if (!state.queuedWave.length) state.queuedWave = null;
       }
     } else if (state.enemies.length === 0) {
@@ -842,6 +912,8 @@ function update(dt) {
   state.flash = Math.max(0, state.flash - dt * 0.9);
   state.shake = Math.max(0, state.shake - dt * 18);
   state.terrainOffset += dt * (80 + state.stage.id * 14);
+  state.stageTransition = Math.max(0, state.stageTransition - dt);
+  state.bossBanner = Math.max(0, state.bossBanner - dt);
   p.invuln = Math.max(0, p.invuln - dt);
   p.cooldown = Math.max(0, p.cooldown - dt);
   p.missileCooldown = Math.max(0, p.missileCooldown - dt);
@@ -1050,7 +1122,8 @@ function update(dt) {
 }
 
 function drawTerrain() {
-  const [c1, c2, c3] = state.stage.sky;
+  const stage = state.stage;
+  const [c1, c2, c3] = stage.sky;
   const grad = ctx.createLinearGradient(0, 0, 0, H);
   grad.addColorStop(0, c1);
   grad.addColorStop(0.55, c2);
@@ -1058,84 +1131,124 @@ function drawTerrain() {
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
 
-  const glow = ctx.createRadialGradient(W * 0.5, H * 0.2, 40, W * 0.5, H * 0.35, H * 0.9);
-  glow.addColorStop(0, 'rgba(255,255,255,0.08)');
-  glow.addColorStop(0.45, 'rgba(100,180,255,0.05)');
-  glow.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = glow;
+  const sunX = W * (0.18 + stage.id * 0.09);
+  const sunY = H * (0.12 + (stage.id % 3) * 0.04);
+  const sun = ctx.createRadialGradient(sunX, sunY, 20, sunX, sunY, 180);
+  sun.addColorStop(0, stage.terrain === 'lava' ? 'rgba(255,214,120,0.32)' : stage.terrain === 'voidstorm' ? 'rgba(175,120,255,0.2)' : 'rgba(255,255,255,0.16)');
+  sun.addColorStop(0.4, stage.terrain === 'lava' ? 'rgba(255,110,40,0.18)' : stage.terrain === 'voidstorm' ? 'rgba(110,70,255,0.12)' : 'rgba(100,180,255,0.08)');
+  sun.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = sun;
   ctx.fillRect(0, 0, W, H);
 
-  if (state.stage.terrain === 'islands') {
-    ctx.fillStyle = 'rgba(38, 110, 72, 0.24)';
-    for (let i = 0; i < 6; i++) {
-      const y = ((i * 160) + state.terrainOffset * (0.8 + i * 0.06)) % (H + 180) - 180;
+  ctx.fillStyle = 'rgba(255,255,255,0.04)';
+  for (let i = 0; i < 5; i++) {
+    const bandY = (i * 180 + state.terrainOffset * (0.12 + i * 0.04)) % (H + 220) - 180;
+    ctx.fillRect(0, bandY, W, 1);
+  }
+
+  if (stage.terrain === 'islands') {
+    for (let i = 0; i < 7; i++) {
+      const y = ((i * 154) + state.terrainOffset * (0.7 + i * 0.05)) % (H + 220) - 220;
+      ctx.fillStyle = i % 2 ? 'rgba(42, 126, 88, 0.26)' : 'rgba(24, 74, 120, 0.22)';
       ctx.beginPath();
-      ctx.moveTo(0, y + 90);
-      ctx.quadraticCurveTo(W * 0.2, y, W * 0.5, y + 65);
-      ctx.quadraticCurveTo(W * 0.75, y + 130, W, y + 40);
-      ctx.lineTo(W, y + 180);
-      ctx.lineTo(0, y + 180);
+      ctx.moveTo(0, y + 105);
+      ctx.quadraticCurveTo(W * 0.16, y + 10, W * 0.36, y + 76);
+      ctx.quadraticCurveTo(W * 0.56, y + 138, W * 0.8, y + 44);
+      ctx.quadraticCurveTo(W * 0.92, y + 16, W, y + 84);
+      ctx.lineTo(W, y + 196);
+      ctx.lineTo(0, y + 196);
       ctx.closePath();
       ctx.fill();
+      ctx.fillStyle = 'rgba(190, 255, 220, 0.05)';
+      ctx.fillRect(0, y + 104, W, 2);
     }
-  } else if (state.stage.terrain === 'clouds') {
-    for (let i = 0; i < 9; i++) {
-      const y = ((i * 120) + state.terrainOffset * (0.9 + i * 0.03)) % (H + 140) - 140;
-      ctx.fillStyle = i % 2 ? 'rgba(220,230,255,0.08)' : 'rgba(255,255,255,0.05)';
+    for (let i = 0; i < 11; i++) {
+      const y = ((i * 92) + state.terrainOffset * (1.16 + i * 0.02)) % (H + 120) - 120;
+      ctx.strokeStyle = 'rgba(160, 220, 255, 0.09)';
       ctx.beginPath();
-      ctx.ellipse((i * 110) % W, y + 30, 120, 28, 0, 0, Math.PI * 2);
-      ctx.ellipse(((i * 110) + 220) % W, y + 58, 140, 32, 0, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  } else if (state.stage.terrain === 'lava') {
-    for (let i = 0; i < 8; i++) {
-      const y = ((i * 110) + state.terrainOffset) % (H + 140) - 140;
-      ctx.fillStyle = 'rgba(255,90,40,0.12)';
-      ctx.beginPath();
-      ctx.moveTo(0, y + 100);
-      ctx.quadraticCurveTo(W * 0.3, y + 10, W * 0.55, y + 85);
-      ctx.quadraticCurveTo(W * 0.75, y + 130, W, y + 30);
-      ctx.lineTo(W, y + 170);
-      ctx.lineTo(0, y + 170);
-      ctx.closePath();
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(255,200,120,0.08)';
+      ctx.moveTo(0, y);
+      ctx.quadraticCurveTo(W * 0.34, y + 16, W * 0.68, y - 12);
+      ctx.quadraticCurveTo(W * 0.86, y - 24, W, y + 8);
       ctx.stroke();
     }
-  } else if (state.stage.terrain === 'voidstorm') {
-    for (let i = 0; i < 10; i++) {
-      const y = ((i * 100) + state.terrainOffset * (1.05 + i * 0.04)) % (H + 180) - 180;
-      const purple = 70 + i * 12;
-      ctx.fillStyle = `rgba(${purple}, 80, 255, 0.08)`;
+  } else if (stage.terrain === 'clouds') {
+    for (let i = 0; i < 12; i++) {
+      const y = ((i * 96) + state.terrainOffset * (0.85 + i * 0.02)) % (H + 160) - 160;
+      const xShift = ((i * 130) % W);
+      ctx.fillStyle = i % 3 === 0 ? 'rgba(255,255,255,0.08)' : 'rgba(194,210,255,0.07)';
       ctx.beginPath();
-      ctx.moveTo(0, y + 60);
-      ctx.quadraticCurveTo(W * 0.22, y - 10, W * 0.48, y + 70);
-      ctx.quadraticCurveTo(W * 0.76, y + 150, W, y + 28);
-      ctx.lineTo(W, y + 170);
-      ctx.lineTo(0, y + 170);
+      ctx.ellipse((xShift + 40) % W, y + 30, 90, 26, 0, 0, Math.PI * 2);
+      ctx.ellipse((xShift + 140) % W, y + 52, 135, 32, 0, 0, Math.PI * 2);
+      ctx.ellipse((xShift + 250) % W, y + 28, 82, 24, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,0.03)';
+      ctx.fillRect(0, y + 84, W, 1);
+    }
+    for (let i = 0; i < 6; i++) {
+      const boltY = ((i * 160) + state.terrainOffset * 1.8) % (H + 240) - 180;
+      const boltX = 80 + ((i * 117 + stage.id * 43) % (W - 160));
+      ctx.strokeStyle = 'rgba(184, 204, 255, 0.12)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(boltX, boltY);
+      ctx.lineTo(boltX - 18, boltY + 30);
+      ctx.lineTo(boltX + 10, boltY + 54);
+      ctx.lineTo(boltX - 10, boltY + 92);
+      ctx.stroke();
+    }
+    ctx.lineWidth = 1;
+  } else if (stage.terrain === 'lava') {
+    for (let i = 0; i < 9; i++) {
+      const y = ((i * 102) + state.terrainOffset * (0.95 + i * 0.04)) % (H + 180) - 160;
+      ctx.fillStyle = i % 2 ? 'rgba(255,88,40,0.14)' : 'rgba(120,30,22,0.18)';
+      ctx.beginPath();
+      ctx.moveTo(0, y + 112);
+      ctx.quadraticCurveTo(W * 0.22, y + 16, W * 0.5, y + 92);
+      ctx.quadraticCurveTo(W * 0.72, y + 152, W, y + 46);
+      ctx.lineTo(W, y + 196);
+      ctx.lineTo(0, y + 196);
       ctx.closePath();
       ctx.fill();
+      ctx.strokeStyle = 'rgba(255,215,140,0.07)';
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,208,120,0.08)';
+      for (let v = 0; v < 4; v++) {
+        const ventX = 70 + ((i * 83 + v * 146) % (W - 140));
+        ctx.fillRect(ventX, y + 28 + v * 14, 10, 26);
+      }
+    }
+  } else if (stage.terrain === 'voidstorm') {
+    for (let i = 0; i < 11; i++) {
+      const y = ((i * 92) + state.terrainOffset * (1.02 + i * 0.04)) % (H + 220) - 180;
+      const purple = 80 + i * 10;
+      ctx.fillStyle = `rgba(${purple}, 80, 255, 0.09)`;
+      ctx.beginPath();
+      ctx.moveTo(0, y + 64);
+      ctx.quadraticCurveTo(W * 0.2, y - 18, W * 0.48, y + 74);
+      ctx.quadraticCurveTo(W * 0.72, y + 148, W, y + 22);
+      ctx.lineTo(W, y + 196);
+      ctx.lineTo(0, y + 196);
+      ctx.closePath();
+      ctx.fill();
+    }
+    for (let i = 0; i < 22; i++) {
+      const x = ((i * 61) + state.terrainOffset * 0.6) % W;
+      const y = ((i * 89) + state.terrainOffset * 1.35) % (H + 120) - 60;
+      ctx.fillStyle = 'rgba(208, 162, 255, 0.15)';
+      ctx.fillRect(x, y, 2, 28);
+      ctx.fillStyle = 'rgba(92, 212, 255, 0.12)';
+      ctx.fillRect(x + 10, y + 14, 2, 18);
     }
   }
 
-  for (let i = 0; i < 3; i++) {
-    const bandY = (i * 210 + state.terrainOffset * (0.22 + i * 0.05)) % (H + 180) - 120;
+  for (let i = 0; i < 4; i++) {
+    const bandY = (i * 210 + state.terrainOffset * (0.22 + i * 0.06)) % (H + 180) - 120;
     const band = ctx.createLinearGradient(0, bandY, 0, bandY + 120);
     band.addColorStop(0, 'rgba(255,255,255,0)');
-    band.addColorStop(0.5, state.stage.terrain === 'lava' ? 'rgba(255,150,90,0.08)' : state.stage.terrain === 'clouds' ? 'rgba(170,180,255,0.08)' : state.stage.terrain === 'voidstorm' ? 'rgba(180,90,255,0.09)' : 'rgba(110,255,220,0.07)');
+    band.addColorStop(0.5, stage.terrain === 'lava' ? 'rgba(255,150,90,0.09)' : stage.terrain === 'clouds' ? 'rgba(170,180,255,0.08)' : stage.terrain === 'voidstorm' ? 'rgba(180,90,255,0.1)' : 'rgba(110,255,220,0.08)');
     band.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = band;
     ctx.fillRect(0, bandY, W, 120);
-  }
-
-  ctx.strokeStyle = 'rgba(180,220,255,0.05)';
-  ctx.lineWidth = 1;
-  for (let y = 0; y < H; y += 56) {
-    const py = (y + state.terrainOffset * 0.7) % (H + 56);
-    ctx.beginPath();
-    ctx.moveTo(0, py);
-    ctx.lineTo(W, py);
-    ctx.stroke();
   }
 
   state.stars.forEach(s => {
@@ -1143,11 +1256,11 @@ function drawTerrain() {
       ctx.save();
       ctx.translate(s.x, s.y);
       ctx.rotate(s.rot);
-      ctx.globalAlpha = 0.25 + s.layer * 0.5;
+      ctx.globalAlpha = 0.18 + s.layer * (stage.terrain === 'voidstorm' ? 0.65 : 0.42);
       ctx.drawImage(images.star, -s.size / 2, -s.size / 2, s.size, s.size);
       ctx.restore();
     } else {
-      ctx.globalAlpha = 0.4 + s.layer * 0.4;
+      ctx.globalAlpha = 0.3 + s.layer * 0.4;
       ctx.fillStyle = '#fff';
       ctx.fillRect(s.x, s.y, 2, 2);
     }
@@ -1307,6 +1420,46 @@ function draw() {
       ctx.font = '600 17px Inter, system-ui, sans-serif';
       ctx.fillText(activeOverlay.sub, W / 2, 160);
     }
+    ctx.restore();
+  }
+
+  if (state.stageTransition > 0) {
+    const t = clamp(state.stageTransition / 1.9, 0, 1);
+    const leftW = W * (0.5 * t);
+    const rightW = W * (0.5 * t);
+    ctx.fillStyle = 'rgba(2, 6, 14, 0.82)';
+    ctx.fillRect(0, 0, leftW, H);
+    ctx.fillRect(W - rightW, 0, rightW, H);
+    ctx.strokeStyle = 'rgba(120, 224, 255, 0.35)';
+    ctx.strokeRect(leftW - 2, 0, 2, H);
+    ctx.strokeRect(W - rightW, 0, 2, H);
+    ctx.fillStyle = `rgba(255,255,255,${0.08 + t * 0.14})`;
+    ctx.fillRect(0, H * 0.48, W, 2);
+  }
+
+  if (state.bossBanner > 0 && state.boss) {
+    const t = clamp(state.bossBanner / 2.8, 0, 1);
+    const slide = (1 - t) * 60;
+    ctx.save();
+    ctx.globalAlpha = clamp(1 - Math.max(0, (0.34 - t) / 0.34), 0, 1);
+    const bannerY = 208 + slide;
+    const bannerH = 76;
+    const grad = ctx.createLinearGradient(0, bannerY, W, bannerY + bannerH);
+    grad.addColorStop(0, 'rgba(255,72,110,0.05)');
+    grad.addColorStop(0.18, 'rgba(255,92,120,0.74)');
+    grad.addColorStop(0.82, 'rgba(255,170,92,0.76)');
+    grad.addColorStop(1, 'rgba(255,170,92,0.06)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, bannerY, W, bannerH);
+    ctx.strokeStyle = 'rgba(255,242,180,0.32)';
+    ctx.strokeRect(0, bannerY + 1, W, bannerH - 2);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#fff4cf';
+    ctx.font = '700 14px Inter, system-ui, sans-serif';
+    ctx.fillText('BOSS APPROACH', W / 2, bannerY + 24);
+    ctx.font = '900 30px Inter, system-ui, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(state.boss.label, W / 2, bannerY + 54);
     ctx.restore();
   }
 
