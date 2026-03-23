@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sky Raid</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -11,7 +11,7 @@
     <div class="hud">
       <div class="brand">
         <strong>Sky Raid</strong>
-        <span class="subtitle">arcade campaign</span>
+        <span class="subtitle">desktop arcade campaign</span>
       </div>
       <div class="metric"><span class="label">Score</span> <span id="score">0</span></div>
       <div class="metric"><span class="label">Lives</span> <span id="lives">3</span></div>
@@ -24,29 +24,30 @@
     </div>
 
     <div class="boss-wrap"><div id="bossbar"></div></div>
-    <canvas id="game" width="480" height="720"></canvas>
+    <canvas id="game" width="720" height="840"></canvas>
   </div>
 
   <div class="overlay" id="overlay">
     <div class="panel" id="panel">
-      <div class="eyebrow">3 stages • minibosses • bosses • mobile controls</div>
+      <div class="eyebrow">7 stages • minibosses • bosses • wide desktop playfield</div>
       <h1>Sky Raid</h1>
-      <p>A punchier little browser shooter with stage progression, weapon swaps, bombs, and boss fights.</p>
+      <p>A broader, tougher desktop-first run with a full seven-stage campaign, escalating stage themes, and room to dodge properly.</p>
       <div class="controls">
         <div><strong>Move</strong><span>Arrow keys or WASD</span></div>
-        <div><strong>Fire</strong><span>Space / J / touch FIRE</span></div>
+        <div><strong>Fire</strong><span>Space or J</span></div>
         <div><strong>Bomb</strong><span>B</span></div>
         <div><strong>Pause</strong><span>P</span></div>
         <div><strong>Mute</strong><span>M</span></div>
+        <div><strong>Restart</strong><span>Enter</span></div>
       </div>
-      <p class="hint">Press Enter or tap Start</p>
+      <p class="hint">Press Enter or click Start</p>
       <div class="actions">
         <button id="startBtn">Start Game</button>
       </div>
     </div>
   </div>
 
-  <div class="touch-ui">
+  <div class="touch-ui" aria-hidden="true">
     <div class="stick-wrap">
       <div class="stick" id="stick"><div class="stick-knob" id="stickKnob"></div></div>
     </div>

@@ -21,28 +21,30 @@ body {
     linear-gradient(180deg, #08172d 0%, #07111e 58%, #03060d 100%);
   font-family: Inter, system-ui, sans-serif;
   color: white;
-  overflow: hidden;
+  overflow: auto;
+  padding: 120px 24px 36px;
 }
 .shell {
   position: relative;
   display: grid;
   justify-items: center;
+  width: min(100%, 1400px);
 }
 #game {
   border: 1px solid rgba(255,255,255,.12);
-  border-radius: 22px;
+  border-radius: 26px;
   box-shadow:
-    0 30px 90px rgba(0,0,0,.52),
+    0 36px 110px rgba(0,0,0,.54),
     0 0 0 1px rgba(255,255,255,.04) inset;
   background:
     radial-gradient(circle at 50% 8%, rgba(255,255,255,0.08), transparent 22%),
     linear-gradient(180deg, #0a1830, #091422);
-  max-width: min(100vw, 480px);
-  max-height: min(100vh, 720px);
+  width: min(100vw - 48px, 720px);
+  height: auto;
 }
 .hud {
   position: fixed;
-  top: max(10px, env(safe-area-inset-top));
+  top: 18px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -50,24 +52,22 @@ body {
   gap: 10px;
   justify-content: center;
   align-items: center;
-  width: min(1000px, calc(100vw - 20px));
-  padding: 10px 12px;
+  width: min(1360px, calc(100vw - 32px));
+  padding: 12px 14px;
   border-radius: 20px;
-  background: linear-gradient(180deg, rgba(8, 14, 27, 0.92), rgba(6, 11, 22, 0.8));
+  background: linear-gradient(180deg, rgba(8, 14, 27, 0.94), rgba(6, 11, 22, 0.84));
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,.08);
   box-shadow: 0 18px 50px rgba(0,0,0,.28);
   font-size: 13px;
   z-index: 10;
 }
-.metric {
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
-}
+.metric { box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
 .brand {
   display: flex;
   flex-direction: column;
   line-height: 1;
-  min-width: 110px;
+  min-width: 170px;
 }
 .brand strong {
   letter-spacing: .08em;
@@ -105,9 +105,9 @@ body {
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(0,0,0,.4);
+  background: rgba(0,0,0,.46);
   z-index: 12;
-  padding: 18px;
+  padding: 24px;
 }
 .overlay.hidden { display: none; }
 .panel {
@@ -115,11 +115,11 @@ body {
     radial-gradient(circle at top, rgba(100,240,255,0.12), transparent 34%),
     linear-gradient(180deg, var(--panel), var(--panel-2));
   border: 1px solid rgba(255,255,255,.1);
-  border-radius: 22px;
-  padding: 30px 32px;
+  border-radius: 24px;
+  padding: 36px 40px;
   text-align: center;
   box-shadow: 0 20px 80px rgba(0,0,0,.5);
-  max-width: 390px;
+  max-width: 560px;
 }
 .eyebrow {
   color: #b7d8ff;
@@ -141,12 +141,12 @@ body {
 .controls {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
   margin: 20px 0;
   text-align: left;
 }
 .controls div {
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-radius: 14px;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.05);
@@ -177,10 +177,10 @@ body {
 }
 .boss-wrap {
   position: fixed;
-  top: calc(max(10px, env(safe-area-inset-top)) + 84px);
+  top: 102px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(440px, calc(100vw - 24px));
+  width: min(700px, calc(100vw - 48px));
   height: 14px;
   border-radius: 999px;
   overflow: hidden;
@@ -197,67 +197,21 @@ body {
   background: linear-gradient(90deg, #ffcf7c, #ff5b72);
   box-shadow: 0 0 24px rgba(255,91,114,0.35);
 }
-.touch-ui {
-  position: fixed;
-  inset: auto 0 max(8px, env(safe-area-inset-bottom)) 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  pointer-events: none;
-  padding: 20px;
-  z-index: 11;
-}
-.stick-wrap, .touch-buttons { pointer-events: auto; }
-.stick {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.08);
-  position: relative;
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: inset 0 0 20px rgba(255,255,255,0.03);
-}
-.stick-knob {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: rgba(100, 240, 255, .88);
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 20px rgba(100,240,255,.4);
-}
-.touch-buttons {
-  display: flex;
-  gap: 12px;
-}
-.touch-buttons button {
-  border: 1px solid rgba(255,255,255,.1);
-  color: white;
-  font-weight: 800;
-  border-radius: 999px;
-  min-width: 88px;
-  min-height: 88px;
-  background: rgba(255,255,255,.12);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 8px 30px rgba(0,0,0,.25);
-}
-#fireBtn { background: rgba(100, 240, 255, .18); }
-#bombBtn { background: rgba(255, 95, 122, .18); }
-@media (hover: hover) and (pointer: fine) {
-  .touch-ui { display: none; }
-}
-@media (max-width: 720px) {
+.touch-ui { display: none; }
+
+@media (max-width: 920px) {
+  body { padding-inline: 12px; }
+  #game { width: min(100vw - 24px, 720px); }
   .hud {
     gap: 8px;
-    padding: 8px 10px;
+    padding: 10px 12px;
     font-size: 12px;
   }
   .metric:nth-child(n+7) {
     display: none;
   }
   .panel {
-    padding: 24px 20px;
+    padding: 28px 22px;
+    max-width: 460px;
   }
 }

@@ -58,45 +58,109 @@ const STAGES = [
     terrain: 'islands',
     musicHue: 195,
     waves: [
-      { gap: 1.12, enemies: ['grunt','grunt','zigzag','grunt','zigzag'] },
-      { gap: 1.04, enemies: ['sweeper','grunt','zigzag','sweeper'] },
-      { gap: 0.98, enemies: ['turret','grunt','turret','zigzag'] },
-      { gap: 0.94, enemies: ['sweeper','zigzag','gunship'] },
+      { gap: 0.92, enemies: ['grunt','grunt','zigzag','grunt','zigzag','grunt'] },
+      { gap: 0.88, enemies: ['sweeper','grunt','zigzag','sweeper','grunt'] },
+      { gap: 0.84, enemies: ['turret','grunt','turret','zigzag','grunt'] },
+      { gap: 0.8, enemies: ['sweeper','zigzag','gunship','grunt'] },
     ],
     miniboss: { kind: 'gunshipElite', label: 'Aegis Interceptor' },
-    boss: { kind: 'carrier', label: 'Coastbreaker Carrier', hp: 170 },
+    boss: { kind: 'carrier', label: 'Coastbreaker Carrier', hp: 190 },
   },
   {
     id: 2,
+    name: 'Sunset Straits',
+    subtitle: 'convoy interdiction',
+    sky: ['#4a254d', '#251436', '#0a0a16'],
+    terrain: 'islands',
+    musicHue: 320,
+    waves: [
+      { gap: 0.86, enemies: ['zigzag','grunt','zigzag','sweeper','grunt','zigzag'] },
+      { gap: 0.82, enemies: ['turret','sweeper','grunt','turret','grunt'] },
+      { gap: 0.8, enemies: ['ace','zigzag','sweeper','ace'] },
+      { gap: 0.76, enemies: ['gunship','grunt','ace','zigzag'] },
+    ],
+    miniboss: { kind: 'gunshipElite', label: 'Harrier Command Ship' },
+    boss: { kind: 'carrier', label: 'Redwake Flag Carrier', hp: 235 },
+  },
+  {
+    id: 3,
     name: 'Storm Front',
     subtitle: 'high-altitude assault',
     sky: ['#1b244e', '#11172f', '#090c15'],
     terrain: 'clouds',
     musicHue: 265,
     waves: [
-      { gap: 0.98, enemies: ['zigzag','ace','zigzag','sweeper','ace'] },
-      { gap: 0.94, enemies: ['turret','ace','sweeper','ace'] },
-      { gap: 0.9, enemies: ['gunship','sweeper','ace'] },
-      { gap: 0.86, enemies: ['ace','zigzag','turret','ace','sweeper'] },
+      { gap: 0.8, enemies: ['zigzag','ace','zigzag','sweeper','ace'] },
+      { gap: 0.76, enemies: ['turret','ace','sweeper','ace','zigzag'] },
+      { gap: 0.74, enemies: ['gunship','sweeper','ace','grunt'] },
+      { gap: 0.7, enemies: ['ace','zigzag','turret','ace','sweeper'] },
     ],
     miniboss: { kind: 'stormCore', label: 'Tempest Core' },
-    boss: { kind: 'dreadnought', label: 'Storm Dreadnought', hp: 215 },
+    boss: { kind: 'dreadnought', label: 'Storm Dreadnought', hp: 275 },
   },
   {
-    id: 3,
+    id: 4,
+    name: 'Midnight Rail',
+    subtitle: 'fortress approach corridor',
+    sky: ['#172136', '#0b1220', '#04070e'],
+    terrain: 'clouds',
+    musicHue: 220,
+    waves: [
+      { gap: 0.74, enemies: ['ace','sweeper','ace','zigzag','ace'] },
+      { gap: 0.72, enemies: ['turret','gunship','grunt','turret','ace'] },
+      { gap: 0.68, enemies: ['sweeper','ace','sweeper','ace','gunship'] },
+      { gap: 0.66, enemies: ['turret','ace','zigzag','ace','turret'] },
+    ],
+    miniboss: { kind: 'stormCore', label: 'Blackout Reactor' },
+    boss: { kind: 'dreadnought', label: 'Nightspike Arsenal', hp: 325 },
+  },
+  {
+    id: 5,
+    name: 'Ashen Rift',
+    subtitle: 'thermal defense belt',
+    sky: ['#412114', '#22110f', '#090506'],
+    terrain: 'lava',
+    musicHue: 24,
+    waves: [
+      { gap: 0.68, enemies: ['ace','sweeper','gunship','ace','zigzag'] },
+      { gap: 0.66, enemies: ['turret','gunship','ace','sweeper','grunt'] },
+      { gap: 0.62, enemies: ['gunship','ace','turret','ace'] },
+      { gap: 0.6, enemies: ['ace','sweeper','turret','gunship','ace'] },
+    ],
+    miniboss: { kind: 'forgeEye', label: 'Forge Eye' },
+    boss: { kind: 'overlord', label: 'Molten Bastion', hp: 380 },
+  },
+  {
+    id: 6,
     name: 'Crimson Furnace',
-    subtitle: 'last line of defense',
+    subtitle: 'reactor crown breach',
     sky: ['#411926', '#1f0e16', '#09050a'],
     terrain: 'lava',
     musicHue: 15,
     waves: [
-      { gap: 0.9, enemies: ['ace','sweeper','ace','gunship','zigzag'] },
-      { gap: 0.86, enemies: ['turret','gunship','ace','sweeper'] },
-      { gap: 0.82, enemies: ['gunship','ace','turret'] },
-      { gap: 0.78, enemies: ['ace','sweeper','turret','gunship','ace'] },
+      { gap: 0.62, enemies: ['ace','sweeper','ace','gunship','zigzag','ace'] },
+      { gap: 0.6, enemies: ['turret','gunship','ace','sweeper','turret'] },
+      { gap: 0.58, enemies: ['gunship','ace','turret','gunship'] },
+      { gap: 0.56, enemies: ['ace','sweeper','turret','gunship','ace','sweeper'] },
     ],
-    miniboss: { kind: 'forgeEye', label: 'Forge Eye' },
-    boss: { kind: 'overlord', label: 'Iron Overlord', hp: 275 },
+    miniboss: { kind: 'forgeEye', label: 'Smelter Citadel Eye' },
+    boss: { kind: 'overlord', label: 'Iron Overlord', hp: 445 },
+  },
+  {
+    id: 7,
+    name: 'Void Apex',
+    subtitle: 'final command citadel',
+    sky: ['#1a1337', '#0a0b18', '#020206'],
+    terrain: 'voidstorm',
+    musicHue: 280,
+    waves: [
+      { gap: 0.58, enemies: ['ace','gunship','ace','sweeper','ace','turret'] },
+      { gap: 0.56, enemies: ['turret','ace','gunship','turret','ace'] },
+      { gap: 0.54, enemies: ['gunship','ace','sweeper','gunship','ace'] },
+      { gap: 0.52, enemies: ['ace','sweeper','turret','gunship','ace','turret'] },
+    ],
+    miniboss: { kind: 'forgeEye', label: 'Apex Warden' },
+    boss: { kind: 'overlord', label: 'Celestial Tyrant', hp: 520 },
   },
 ];
 
@@ -240,7 +304,7 @@ function updateBossHud() {
 }
 
 function resetStars() {
-  state.stars = Array.from({ length: 95 }, () => ({
+  state.stars = Array.from({ length: 130 }, () => ({
     x: Math.random() * W,
     y: Math.random() * H,
     speed: rand(50, 190),
@@ -253,10 +317,10 @@ function resetStars() {
 function resetGame() {
   state.player = {
     x: W / 2 - 24,
-    y: H - 110,
+    y: H - 120,
     w: 48,
     h: 48,
-    speed: 325,
+    speed: 340,
     cooldown: 0,
     missileCooldown: 0,
     invuln: 0,
@@ -358,9 +422,9 @@ function enemyBase(kind, x = rand(20, W - 60), y = -60) {
     turret: { w: 58, h: 58, speed: 62, hp: 7, score: 220, fire: 2.2, sprite: 'enemyTurret' },
     ace: { w: 50, h: 50, speed: 142, hp: 5, score: 200, fire: 1.42, sprite: 'enemyAlt' },
     gunship: { w: 70, h: 62, speed: 76, hp: 14, score: 420, fire: 1.55, sprite: 'boss' },
-    gunshipElite: { w: 92, h: 82, speed: 74, hp: 58, score: 1800, fire: 1.02, sprite: 'boss', miniBoss: true },
-    stormCore: { w: 98, h: 98, speed: 68, hp: 74, score: 2200, fire: 0.96, sprite: 'boss', miniBoss: true },
-    forgeEye: { w: 104, h: 100, speed: 70, hp: 88, score: 2600, fire: 0.92, sprite: 'boss', miniBoss: true },
+    gunshipElite: { w: 92, h: 82, speed: 74, hp: 60, score: 1800, fire: 1.02, sprite: 'boss', miniBoss: true },
+    stormCore: { w: 98, h: 98, speed: 68, hp: 78, score: 2200, fire: 0.96, sprite: 'boss', miniBoss: true },
+    forgeEye: { w: 104, h: 100, speed: 70, hp: 96, score: 2600, fire: 0.92, sprite: 'boss', miniBoss: true },
   };
   const base = bases[kind];
   return {
@@ -369,8 +433,8 @@ function enemyBase(kind, x = rand(20, W - 60), y = -60) {
     w: base.w,
     h: base.h,
     speed: base.speed,
-    hp: base.hp,
-    maxHp: base.hp,
+    hp: base.hp + Math.max(0, state.stage.id - 1) * (base.miniBoss ? 4 : 0),
+    maxHp: base.hp + Math.max(0, state.stage.id - 1) * (base.miniBoss ? 4 : 0),
     score: base.score,
     fireCooldown: rand(base.fire * 0.65, base.fire * 1.15),
     sprite: base.sprite,
@@ -419,13 +483,13 @@ function spawnBoss(kind, label, hp) {
     label,
     x: W / 2 - 86,
     y: -170,
-    w: 172,
-    h: kind === 'overlord' ? 142 : 128,
+    w: kind === 'carrier' ? 190 : kind === 'dreadnought' ? 206 : 220,
+    h: kind === 'overlord' ? 166 : kind === 'dreadnought' ? 146 : 136,
     hp,
     maxHp: hp,
     phase: 0,
-    fireCooldown: 0.8,
-    altCooldown: 1.8,
+    fireCooldown: Math.max(0.5, 0.8 - state.stage.id * 0.03),
+    altCooldown: Math.max(1.1, 1.8 - state.stage.id * 0.05),
     enter: true,
     hitFlash: 0,
   };
@@ -619,7 +683,7 @@ function loseGame() {
     <h1>Mission Failed</h1>
     <p>Score: <strong>${state.score}</strong></p>
     <p>High Score: <strong>${state.highscore}</strong></p>
-    <p class="hint">Enter or tap to launch again</p>
+    <p class="hint">Enter or click to launch again</p>
     <button id="startBtn2">Retry</button>
   `;
   const btn = document.getElementById('startBtn2');
@@ -635,7 +699,7 @@ function winGame() {
     <p>You cleared all ${STAGES.length} stages.</p>
     <p>Score: <strong>${state.score}</strong></p>
     <p>High Score: <strong>${state.highscore}</strong></p>
-    <p class="hint">Enter or tap to run it back</p>
+    <p class="hint">Enter or click to run it back</p>
     <button id="startBtn2">Play Again</button>
   `;
   const btn = document.getElementById('startBtn2');
@@ -676,46 +740,47 @@ function bossBehavior(dt) {
     return;
   }
   b.phase += dt;
+  const stageBoost = Math.max(0, state.stage.id - 1);
   if (b.kind === 'carrier') {
-    b.x = W / 2 - b.w / 2 + Math.sin(b.phase * 0.95) * 85;
+    b.x = W / 2 - b.w / 2 + Math.sin(b.phase * (0.95 + stageBoost * 0.02)) * 125;
     b.fireCooldown -= dt;
     b.altCooldown -= dt;
     if (b.fireCooldown <= 0) {
-      aimedShot(b, 150, 0.12, 4, '#ff8c69');
-      b.fireCooldown = 1.22;
+      aimedShot(b, 150 + stageBoost * 4, 0.12, 4 + Math.floor(stageBoost / 2), '#ff8c69');
+      b.fireCooldown = Math.max(0.78, 1.22 - stageBoost * 0.04);
       sfx('bossShot');
     }
     if (b.altCooldown <= 0) {
-      radialShot(b, 10, 118, '#a77bff');
-      b.altCooldown = 3.2;
+      radialShot(b, 10 + stageBoost, 118 + stageBoost * 3, '#a77bff');
+      b.altCooldown = Math.max(1.9, 3.2 - stageBoost * 0.12);
       sfx('bossShot');
     }
   } else if (b.kind === 'dreadnought') {
-    b.x = W / 2 - b.w / 2 + Math.sin(b.phase * 0.62) * 100;
+    b.x = W / 2 - b.w / 2 + Math.sin(b.phase * (0.62 + stageBoost * 0.03)) * 150;
     b.fireCooldown -= dt;
     b.altCooldown -= dt;
     if (b.fireCooldown <= 0) {
-      aimedShot(b, 175, 0.09, 5, '#ff5f7a');
-      b.fireCooldown = 1.08;
+      aimedShot(b, 175 + stageBoost * 5, 0.09, 5 + Math.floor(stageBoost / 2), '#ff5f7a');
+      b.fireCooldown = Math.max(0.7, 1.08 - stageBoost * 0.04);
       sfx('bossShot');
     }
     if (b.altCooldown <= 0) {
-      radialShot(b, 12, 132, '#ffd166');
-      b.altCooldown = 2.9;
+      radialShot(b, 12 + stageBoost, 132 + stageBoost * 3, '#ffd166');
+      b.altCooldown = Math.max(1.7, 2.9 - stageBoost * 0.1);
       sfx('bossShot');
     }
   } else if (b.kind === 'overlord') {
-    b.x = W / 2 - b.w / 2 + Math.sin(b.phase * 0.8) * 110;
+    b.x = W / 2 - b.w / 2 + Math.sin(b.phase * (0.8 + stageBoost * 0.035)) * 170;
     b.fireCooldown -= dt;
     b.altCooldown -= dt;
     if (b.fireCooldown <= 0) {
-      aimedShot(b, 192, 0.06, 6, '#ff6b9b');
-      b.fireCooldown = 0.98;
+      aimedShot(b, 192 + stageBoost * 6, 0.06, 6 + Math.floor(stageBoost / 2), '#ff6b9b');
+      b.fireCooldown = Math.max(0.56, 0.98 - stageBoost * 0.035);
       sfx('bossShot');
     }
     if (b.altCooldown <= 0) {
-      radialShot(b, 14, 145, '#ffb347');
-      b.altCooldown = 2.35;
+      radialShot(b, 14 + stageBoost, 145 + stageBoost * 3, '#ffb347');
+      b.altCooldown = Math.max(1.45, 2.35 - stageBoost * 0.08);
       sfx('bossShot');
     }
   }
@@ -877,22 +942,22 @@ function update(dt) {
       enemy.y += enemy.speed * dt * 0.68;
       enemy.x += Math.sin(enemy.phase + enemy.y / 65) * 70 * dt;
     } else if (enemy.miniBoss) {
-      if (enemy.y < 70) enemy.y += 80 * dt;
-      else enemy.x = W / 2 - enemy.w / 2 + Math.sin((performance.now() / 1000) * 0.9) * 90;
+      if (enemy.y < 76) enemy.y += 80 * dt;
+      else enemy.x = W / 2 - enemy.w / 2 + Math.sin((performance.now() / 1000) * (0.9 + state.stage.id * 0.03)) * (90 + state.stage.id * 8);
     } else {
       enemy.y += enemy.speed * dt;
     }
 
     if (enemy.fireCooldown <= 0 && enemy.y > 24) {
-      if (enemy.kind === 'turret') aimedShot(enemy, 140, 0.16, 3, '#ff9f43');
-      else if (enemy.kind === 'ace') aimedShot(enemy, 175, 0.08, 2, '#ff5f7a');
-      else if (enemy.kind === 'sweeper') aimedShot(enemy, 152, 0.22, 2, '#a77bff');
-      else if (enemy.kind === 'gunship') radialShot(enemy, 6, 118, '#ff9f43');
-      else if (enemy.kind === 'gunshipElite') { aimedShot(enemy, 165, 0.15, 5, '#ff5f7a'); radialShot(enemy, 8, 108, '#ffd166'); }
-      else if (enemy.kind === 'stormCore') { radialShot(enemy, 10, 126, '#a77bff'); aimedShot(enemy, 172, 0.07, 4, '#ff6b9b'); }
-      else if (enemy.kind === 'forgeEye') { radialShot(enemy, 12, 138, '#ff9f43'); aimedShot(enemy, 182, 0.05, 5, '#ff5f7a'); }
-      else aimedShot(enemy, 150, 0, 1, '#9b6bff');
-      enemy.fireCooldown = enemy.miniBoss ? rand(0.95, 1.45) : enemy.kind === 'gunship' ? 1.9 : rand(1.4, 2.6);
+      if (enemy.kind === 'turret') aimedShot(enemy, 140 + state.stage.id * 3, 0.16, 3, '#ff9f43');
+      else if (enemy.kind === 'ace') aimedShot(enemy, 175 + state.stage.id * 3, 0.08, 2, '#ff5f7a');
+      else if (enemy.kind === 'sweeper') aimedShot(enemy, 152 + state.stage.id * 2, 0.22, 2, '#a77bff');
+      else if (enemy.kind === 'gunship') radialShot(enemy, 6 + Math.floor(state.stage.id / 3), 118 + state.stage.id * 2, '#ff9f43');
+      else if (enemy.kind === 'gunshipElite') { aimedShot(enemy, 165 + state.stage.id * 4, 0.15, 5, '#ff5f7a'); radialShot(enemy, 8 + Math.floor(state.stage.id / 2), 108 + state.stage.id * 2, '#ffd166'); }
+      else if (enemy.kind === 'stormCore') { radialShot(enemy, 10 + Math.floor(state.stage.id / 2), 126 + state.stage.id * 2, '#a77bff'); aimedShot(enemy, 172 + state.stage.id * 4, 0.07, 4 + Math.floor(state.stage.id / 3), '#ff6b9b'); }
+      else if (enemy.kind === 'forgeEye') { radialShot(enemy, 12 + Math.floor(state.stage.id / 2), 138 + state.stage.id * 2, '#ff9f43'); aimedShot(enemy, 182 + state.stage.id * 4, 0.05, 5 + Math.floor(state.stage.id / 3), '#ff5f7a'); }
+      else aimedShot(enemy, 150 + state.stage.id * 2, 0, 1, '#9b6bff');
+      enemy.fireCooldown = enemy.miniBoss ? rand(0.85, 1.28) : enemy.kind === 'gunship' ? 1.75 : rand(1.2, 2.3);
       sfx('bossShot');
     }
 
@@ -1018,8 +1083,8 @@ function drawTerrain() {
       const y = ((i * 120) + state.terrainOffset * (0.9 + i * 0.03)) % (H + 140) - 140;
       ctx.fillStyle = i % 2 ? 'rgba(220,230,255,0.08)' : 'rgba(255,255,255,0.05)';
       ctx.beginPath();
-      ctx.ellipse((i * 70) % W, y + 30, 80, 28, 0, 0, Math.PI * 2);
-      ctx.ellipse(((i * 70) + 140) % W, y + 58, 100, 32, 0, 0, Math.PI * 2);
+      ctx.ellipse((i * 110) % W, y + 30, 120, 28, 0, 0, Math.PI * 2);
+      ctx.ellipse(((i * 110) + 220) % W, y + 58, 140, 32, 0, 0, Math.PI * 2);
       ctx.fill();
     }
   } else if (state.stage.terrain === 'lava') {
@@ -1037,13 +1102,27 @@ function drawTerrain() {
       ctx.strokeStyle = 'rgba(255,200,120,0.08)';
       ctx.stroke();
     }
+  } else if (state.stage.terrain === 'voidstorm') {
+    for (let i = 0; i < 10; i++) {
+      const y = ((i * 100) + state.terrainOffset * (1.05 + i * 0.04)) % (H + 180) - 180;
+      const purple = 70 + i * 12;
+      ctx.fillStyle = `rgba(${purple}, 80, 255, 0.08)`;
+      ctx.beginPath();
+      ctx.moveTo(0, y + 60);
+      ctx.quadraticCurveTo(W * 0.22, y - 10, W * 0.48, y + 70);
+      ctx.quadraticCurveTo(W * 0.76, y + 150, W, y + 28);
+      ctx.lineTo(W, y + 170);
+      ctx.lineTo(0, y + 170);
+      ctx.closePath();
+      ctx.fill();
+    }
   }
 
   for (let i = 0; i < 3; i++) {
     const bandY = (i * 210 + state.terrainOffset * (0.22 + i * 0.05)) % (H + 180) - 120;
     const band = ctx.createLinearGradient(0, bandY, 0, bandY + 120);
     band.addColorStop(0, 'rgba(255,255,255,0)');
-    band.addColorStop(0.5, state.stage.id === 3 ? 'rgba(255,150,90,0.08)' : state.stage.id === 2 ? 'rgba(170,180,255,0.08)' : 'rgba(110,255,220,0.07)');
+    band.addColorStop(0.5, state.stage.terrain === 'lava' ? 'rgba(255,150,90,0.08)' : state.stage.terrain === 'clouds' ? 'rgba(170,180,255,0.08)' : state.stage.terrain === 'voidstorm' ? 'rgba(180,90,255,0.09)' : 'rgba(110,255,220,0.07)');
     band.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = band;
     ctx.fillRect(0, bandY, W, 120);
@@ -1221,12 +1300,12 @@ function draw() {
     ctx.globalAlpha = clamp(alpha, 0, 1);
     ctx.textAlign = 'center';
     ctx.fillStyle = activeOverlay.tone === 'warning' ? '#ffcf7c' : '#ffffff';
-    ctx.font = '800 30px Inter, system-ui, sans-serif';
-    ctx.fillText(activeOverlay.text, W / 2, 120);
+    ctx.font = '800 32px Inter, system-ui, sans-serif';
+    ctx.fillText(activeOverlay.text, W / 2, 132);
     if (activeOverlay.sub) {
       ctx.fillStyle = '#b8e8ff';
-      ctx.font = '600 16px Inter, system-ui, sans-serif';
-      ctx.fillText(activeOverlay.sub, W / 2, 146);
+      ctx.font = '600 17px Inter, system-ui, sans-serif';
+      ctx.fillText(activeOverlay.sub, W / 2, 160);
     }
     ctx.restore();
   }
@@ -1281,6 +1360,7 @@ if (overlay) overlay.addEventListener('click', (e) => {
 });
 
 function updateStick(clientX, clientY) {
+  if (!stick || !stickKnob) return;
   const rect = stick.getBoundingClientRect();
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
@@ -1299,19 +1379,23 @@ function updateStick(clientX, clientY) {
 }
 
 function resetStick() {
-  stickKnob.style.transform = 'translate(-50%, -50%)';
+  if (stickKnob) stickKnob.style.transform = 'translate(-50%, -50%)';
   touchMove.x = 0;
   touchMove.y = 0;
   touchMove.active = false;
 }
 
-stick.addEventListener('pointerdown', (e) => { ensureAudio(); stick.setPointerCapture(e.pointerId); updateStick(e.clientX, e.clientY); });
-stick.addEventListener('pointermove', (e) => { if (e.pressure > 0) updateStick(e.clientX, e.clientY); });
-stick.addEventListener('pointerup', resetStick);
-stick.addEventListener('pointercancel', resetStick);
-fireBtn.addEventListener('pointerdown', () => { ensureAudio(); firingTouch = true; if (!running) startGame(); });
-fireBtn.addEventListener('pointerup', () => { firingTouch = false; });
-fireBtn.addEventListener('pointercancel', () => { firingTouch = false; });
-bombBtn.addEventListener('pointerdown', () => { ensureAudio(); if (running) bomb(); else startGame(); });
+if (stick && stickKnob) {
+  stick.addEventListener('pointerdown', (e) => { ensureAudio(); stick.setPointerCapture(e.pointerId); updateStick(e.clientX, e.clientY); });
+  stick.addEventListener('pointermove', (e) => { if (e.pressure > 0) updateStick(e.clientX, e.clientY); });
+  stick.addEventListener('pointerup', resetStick);
+  stick.addEventListener('pointercancel', resetStick);
+}
+if (fireBtn) {
+  fireBtn.addEventListener('pointerdown', () => { ensureAudio(); firingTouch = true; if (!running) startGame(); });
+  fireBtn.addEventListener('pointerup', () => { firingTouch = false; });
+  fireBtn.addEventListener('pointercancel', () => { firingTouch = false; });
+}
+if (bombBtn) bombBtn.addEventListener('pointerdown', () => { ensureAudio(); if (running) bomb(); else startGame(); });
 
 requestAnimationFrame(loop);
