@@ -1,13 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
   <defs>
-    <linearGradient id="tb" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffd3d3"/>
-      <stop offset="100%" stop-color="#8f243d"/>
+    <linearGradient id="bomber" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd7d7"/>
+      <stop offset="50%" stop-color="#d94d6b"/>
+      <stop offset="100%" stop-color="#6d1730"/>
     </linearGradient>
   </defs>
-  <rect x="18" y="22" width="84" height="72" rx="18" fill="url(#tb)" stroke="#ffe7ea" stroke-width="3"/>
-  <circle cx="60" cy="58" r="18" fill="#2b0f19" stroke="#ffc6d1" stroke-width="3"/>
-  <rect x="50" y="8" width="20" height="28" rx="8" fill="#ff9f43"/>
-  <rect x="24" y="50" width="18" height="10" rx="5" fill="#2b0f19"/>
-  <rect x="78" y="50" width="18" height="10" rx="5" fill="#2b0f19"/>
+  <polygon points="60,8 76,28 72,94 48,94 44,28" fill="url(#bomber)" stroke="#ffe6ea" stroke-width="3"/>
+  <polygon points="18,48 48,34 44,66 12,62" fill="#7d2038" stroke="#ffd6df" stroke-width="3"/>
+  <polygon points="102,48 72,34 76,66 108,62" fill="#7d2038" stroke="#ffd6df" stroke-width="3"/>
+  <polygon points="34,62 48,56 44,84 28,90" fill="#521323"/>
+  <polygon points="86,62 72,56 76,84 92,90" fill="#521323"/>
+  <rect x="54" y="22" width="12" height="16" rx="4" fill="#2c0f17"/>
+  <circle cx="60" cy="30" r="4" fill="#fff0b0"/>
+  <rect x="54" y="0" width="12" height="18" rx="4" fill="#ffb347"/>
 </svg>
