@@ -7,6 +7,7 @@ const powerEl = document.getElementById('power');
 const highEl = document.getElementById('highscore');
 const overlay = document.getElementById('overlay');
 const panel = document.getElementById('panel');
+const startBtn = document.getElementById('startBtn');
 const bossWrap = document.querySelector('.boss-wrap');
 const bossBar = document.getElementById('bossbar');
 const stick = document.getElementById('stick');
@@ -531,10 +532,19 @@ window.addEventListener('keydown', (e) => {
   const key = e.key.toLowerCase();
   keys.add(key);
   if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(key)) e.preventDefault();
-  if (key === 'enter' && !running) resetGame();
+  if (key === 'enter' && !running) startGame();
   if (key === 'b' && running) bomb();
 });
 window.addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
+
+function startGame() {
+  resetGame();
+}
+
+if (startBtn) startBtn.addEventListener('click', startGame);
+if (overlay) overlay.addEventListener('click', (e) => {
+  if (!running && (e.target === overlay || e.target === panel)) startGame();
+});
 
 function updateStick(clientX, clientY) {
   const rect = stick.getBoundingClientRect();
@@ -563,9 +573,9 @@ stick.addEventListener('pointerdown', (e) => { stick.setPointerCapture(e.pointer
 stick.addEventListener('pointermove', (e) => { if (e.pressure > 0) updateStick(e.clientX, e.clientY); });
 stick.addEventListener('pointerup', resetStick);
 stick.addEventListener('pointercancel', resetStick);
-fireBtn.addEventListener('pointerdown', () => { firingTouch = true; if (!running) resetGame(); });
+fireBtn.addEventListener('pointerdown', () => { firingTouch = true; if (!running) startGame(); });
 fireBtn.addEventListener('pointerup', () => { firingTouch = false; });
 fireBtn.addEventListener('pointercancel', () => { firingTouch = false; });
-bombBtn.addEventListener('pointerdown', () => { if (running) bomb(); else resetGame(); });
+bombBtn.addEventListener('pointerdown', () => { if (running) bomb(); else startGame(); });
 
 requestAnimationFrame(loop);

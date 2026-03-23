@@ -68,6 +68,16 @@ body {
   text-transform: uppercase;
 }
 .hint { color: #aeeeff; font-weight: 600; }
+#startBtn {
+  border: none;
+  margin-top: 8px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #64f0ff, #4aa8ff);
+  color: #031018;
+  font-weight: 800;
+  cursor: pointer;
+}
 .boss-wrap {
   position: fixed;
   top: calc(max(10px, env(safe-area-inset-top)) + 64px);
