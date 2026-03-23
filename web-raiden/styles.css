@@ -1,25 +1,39 @@
 :root {
   color-scheme: dark;
   --bg: #08111f;
-  --panel: rgba(4, 8, 18, 0.88);
+  --panel: rgba(4, 8, 18, 0.84);
+  --panel-2: rgba(10, 16, 28, 0.9);
   --accent: #64f0ff;
   --danger: #ff5f7a;
   --ok: #7ef29a;
+  --text-dim: rgba(220, 235, 255, 0.72);
 }
 * { box-sizing: border-box; }
+html, body { height: 100%; }
 body {
   margin: 0;
   min-height: 100vh;
   display: grid;
   place-items: center;
-  background: radial-gradient(circle at top, #123967 0%, #08111f 55%, #04070d 100%);
+  background:
+    radial-gradient(circle at top, rgba(77, 137, 255, 0.22), transparent 30%),
+    radial-gradient(circle at bottom, rgba(255, 88, 130, 0.16), transparent 24%),
+    linear-gradient(180deg, #08172d 0%, #07111e 58%, #03060d 100%);
   font-family: Inter, system-ui, sans-serif;
   color: white;
   overflow: hidden;
 }
+.shell {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
 #game {
-  border: 2px solid rgba(255,255,255,.15);
-  box-shadow: 0 24px 80px rgba(0,0,0,.45);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 22px;
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.52),
+    0 0 0 1px rgba(255,255,255,.04) inset;
   background: linear-gradient(#0a1830, #091422);
   max-width: min(100vw, 480px);
   max-height: min(100vh, 720px);
@@ -31,63 +45,140 @@ body {
   transform: translateX(-50%);
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 10px;
   justify-content: center;
   align-items: center;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: var(--panel);
-  backdrop-filter: blur(8px);
-  font-size: 14px;
+  width: min(1000px, calc(100vw - 20px));
+  padding: 10px 12px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(8, 14, 27, 0.92), rgba(6, 11, 22, 0.8));
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 18px 50px rgba(0,0,0,.28);
+  font-size: 13px;
   z-index: 10;
 }
-.brand { display: flex; flex-direction: column; line-height: 1; }
-.subtitle { font-size: 10px; opacity: .7; text-transform: uppercase; letter-spacing: .18em; margin-top: 3px; }
+.brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  min-width: 110px;
+}
+.brand strong {
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.subtitle {
+  font-size: 10px;
+  opacity: .74;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  margin-top: 4px;
+}
+.metric {
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.05);
+  white-space: nowrap;
+}
+.label {
+  color: var(--text-dim);
+  margin-right: 5px;
+}
+.mini-btn {
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,0.06);
+  color: white;
+  border-radius: 999px;
+  padding: 9px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
 .overlay {
   position: fixed;
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(0,0,0,.35);
+  background: rgba(0,0,0,.4);
   z-index: 12;
+  padding: 18px;
 }
 .overlay.hidden { display: none; }
 .panel {
-  background: var(--panel);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 18px;
-  padding: 28px 34px;
+  background: linear-gradient(180deg, var(--panel), var(--panel-2));
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 22px;
+  padding: 30px 32px;
   text-align: center;
-  box-shadow: 0 16px 60px rgba(0,0,0,.45);
-  max-width: 340px;
+  box-shadow: 0 20px 80px rgba(0,0,0,.5);
+  max-width: 390px;
+}
+.eyebrow {
+  color: #b7d8ff;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
 .panel h1 {
-  margin-top: 0;
+  margin: 0 0 10px;
   color: var(--accent);
-  letter-spacing: .08em;
+  letter-spacing: .1em;
   text-transform: uppercase;
 }
-.hint { color: #aeeeff; font-weight: 600; }
-#startBtn {
+.panel p {
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 20px 0;
+  text-align: left;
+}
+.controls div {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.controls strong {
+  display: block;
+  margin-bottom: 3px;
+}
+.controls span {
+  color: var(--text-dim);
+  font-size: 13px;
+}
+.hint { color: #c8f0ff; font-weight: 700; }
+.actions {
+  display: flex;
+  justify-content: center;
+}
+#startBtn, #startBtn2 {
   border: none;
   margin-top: 8px;
-  padding: 12px 18px;
+  padding: 13px 20px;
   border-radius: 999px;
   background: linear-gradient(90deg, #64f0ff, #4aa8ff);
   color: #031018;
-  font-weight: 800;
+  font-weight: 900;
   cursor: pointer;
+  box-shadow: 0 10px 24px rgba(74,168,255,0.3);
 }
 .boss-wrap {
   position: fixed;
-  top: calc(max(10px, env(safe-area-inset-top)) + 64px);
+  top: calc(max(10px, env(safe-area-inset-top)) + 84px);
   left: 50%;
   transform: translateX(-50%);
   width: min(440px, calc(100vw - 24px));
-  height: 12px;
+  height: 14px;
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(255,255,255,.1);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,0.06);
   z-index: 10;
   opacity: 0;
   transition: opacity .2s;
@@ -96,7 +187,8 @@ body {
 #bossbar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #ff7f50, #ff3c6f);
+  background: linear-gradient(90deg, #ffcf7c, #ff5b72);
+  box-shadow: 0 0 24px rgba(255,91,114,0.35);
 }
 .touch-ui {
   position: fixed;
@@ -116,12 +208,13 @@ body {
   background: rgba(255,255,255,.08);
   position: relative;
   border: 1px solid rgba(255,255,255,.12);
+  box-shadow: inset 0 0 20px rgba(255,255,255,0.03);
 }
 .stick-knob {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: rgba(100, 240, 255, .85);
+  background: rgba(100, 240, 255, .88);
   position: absolute;
   left: 50%;
   top: 50%;
@@ -133,12 +226,12 @@ body {
   gap: 12px;
 }
 .touch-buttons button {
-  border: none;
+  border: 1px solid rgba(255,255,255,.1);
   color: white;
-  font-weight: 700;
+  font-weight: 800;
   border-radius: 999px;
-  min-width: 86px;
-  min-height: 86px;
+  min-width: 88px;
+  min-height: 88px;
   background: rgba(255,255,255,.12);
   backdrop-filter: blur(6px);
   box-shadow: 0 8px 30px rgba(0,0,0,.25);
@@ -147,4 +240,17 @@ body {
 #bombBtn { background: rgba(255, 95, 122, .18); }
 @media (hover: hover) and (pointer: fine) {
   .touch-ui { display: none; }
+}
+@media (max-width: 720px) {
+  .hud {
+    gap: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  .metric:nth-child(n+7) {
+    display: none;
+  }
+  .panel {
+    padding: 24px 20px;
+  }
 }

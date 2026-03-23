@@ -7,30 +7,42 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="hud">
-    <div class="brand">
-      <strong>Sky Raid</strong>
-      <span class="subtitle">arcade mode</span>
+  <div class="shell">
+    <div class="hud">
+      <div class="brand">
+        <strong>Sky Raid</strong>
+        <span class="subtitle">arcade campaign</span>
+      </div>
+      <div class="metric"><span class="label">Score</span> <span id="score">0</span></div>
+      <div class="metric"><span class="label">Lives</span> <span id="lives">3</span></div>
+      <div class="metric"><span class="label">Bombs</span> <span id="bombs">2</span></div>
+      <div class="metric"><span class="label">Power/Missiles</span> <span id="power">1/0</span></div>
+      <div class="metric"><span class="label">Weapon</span> <span id="weaponName">Pulse</span></div>
+      <div class="metric"><span class="label">Stage</span> <span id="stageName">1. Emerald Coast</span></div>
+      <div class="metric"><span class="label">High</span> <span id="highscore">0</span></div>
+      <button id="muteBtn" class="mini-btn">🔊 Sound On</button>
     </div>
-    <div>Score <span id="score">0</span></div>
-    <div>Lives <span id="lives">3</span></div>
-    <div>Bombs <span id="bombs">2</span></div>
-    <div>Power/Missiles <span id="power">1/0</span></div>
-    <div>High <span id="highscore">0</span></div>
-  </div>
 
-  <div class="boss-wrap"><div id="bossbar"></div></div>
-  <canvas id="game" width="480" height="720"></canvas>
+    <div class="boss-wrap"><div id="bossbar"></div></div>
+    <canvas id="game" width="480" height="720"></canvas>
+  </div>
 
   <div class="overlay" id="overlay">
     <div class="panel" id="panel">
+      <div class="eyebrow">3 stages • minibosses • bosses • mobile controls</div>
       <h1>Sky Raid</h1>
-      <p>A small Sky Force / Raiden-style browser shooter.</p>
-      <p>Move: Arrow keys or WASD</p>
-      <p>Fire: Space / auto-fire on mobile</p>
-      <p>Bomb: B</p>
-      <p class="hint">Press Enter to start</p>
-      <button id="startBtn">Start Game</button>
+      <p>A punchier little browser shooter with stage progression, weapon swaps, bombs, and boss fights.</p>
+      <div class="controls">
+        <div><strong>Move</strong><span>Arrow keys or WASD</span></div>
+        <div><strong>Fire</strong><span>Space / J / touch FIRE</span></div>
+        <div><strong>Bomb</strong><span>B</span></div>
+        <div><strong>Pause</strong><span>P</span></div>
+        <div><strong>Mute</strong><span>M</span></div>
+      </div>
+      <p class="hint">Press Enter or tap Start</p>
+      <div class="actions">
+        <button id="startBtn">Start Game</button>
+      </div>
     </div>
   </div>
 
