@@ -32,10 +32,12 @@ const images = {
   player: new Image(),
   enemy: new Image(),
   star: new Image(),
+  missile: new Image(),
 };
 images.player.src = 'assets/images/player.png';
 images.enemy.src = 'assets/images/enemy.png';
 images.star.src = 'assets/images/star.svg';
+images.missile.src = 'assets/images/missile.svg';
 
 const HIGH_KEY = 'skyraid-highscore';
 let lastTime = 0;
@@ -47,6 +49,7 @@ const state = {
   player: null,
   bullets: [],
   enemyBullets: [],
+  missiles: [],
   enemies: [],
   particles: [],
   stars: [],
@@ -87,9 +90,12 @@ function resetGame() {
     bombs: 2,
     invuln: 0,
     power: 1,
+    missileCooldown: 0,
+    missiles: 0,
   };
   state.bullets = [];
   state.enemyBullets = [];
+  state.missiles = [];
   state.enemies = [];
   state.particles = [];
   state.powerUps = [];
@@ -119,7 +125,7 @@ function updateHud() {
   scoreEl.textContent = state.score;
   livesEl.textContent = state.player.lives;
   bombsEl.textContent = state.player.bombs;
-  powerEl.textContent = state.player.power;
+  powerEl.textContent = `${state.player.power}/${state.player.missiles}`;
   if (state.score > state.highscore) {
     state.highscore = state.score;
     localStorage.setItem(HIGH_KEY, String(state.highscore));
@@ -146,7 +152,8 @@ function explode(x, y, color, count, spread = 220) {
 }
 
 function spawnPowerUp(x, y) {
-  const type = Math.random() < 0.65 ? 'power' : 'bomb';
+  const roll = Math.random();
+  const type = roll < 0.55 ? 'power' : roll < 0.82 ? 'bomb' : 'missile';
   state.powerUps.push({ x, y, w: 24, h: 24, type, speed: 120 });
 }
 
@@ -221,6 +228,7 @@ function bomb() {
   if (p.bombs <= 0) return;
   p.bombs -= 1;
   state.enemyBullets = [];
+  state.missiles = [];
   state.enemies.forEach(e => {
     e.hp -= 999;
     explode(e.x + e.w / 2, e.y + e.h / 2, '#64f0ff', 15);
@@ -263,6 +271,7 @@ function update(dt) {
   const p = state.player;
   p.invuln = Math.max(0, p.invuln - dt);
   p.cooldown = Math.max(0, p.cooldown - dt);
+  p.missileCooldown = Math.max(0, p.missileCooldown - dt);
   if (state.messageTimer > 0) state.messageTimer -= dt;
 
   let dx = 0, dy = 0;
@@ -284,6 +293,13 @@ function update(dt) {
   if (wantsFire && p.cooldown <= 0) {
     shootPlayer();
     p.cooldown = 0.16;
+  }
+  if (p.missiles > 0 && p.missileCooldown <= 0 && (state.enemies.length || state.boss)) {
+    const target = (state.boss && state.boss.hp > 0) ? state.boss : state.enemies.slice().sort((a,b)=>a.y-b.y)[0];
+    if (target) {
+      state.missiles.push({ x: p.x + p.w / 2 - 8, y: p.y + 8, w: 16, h: 24, speed: 260, turn: 4.2, target });
+      p.missileCooldown = 1.15;
+    }
   }
 
   state.stars.forEach(s => {
@@ -313,6 +329,25 @@ function update(dt) {
     b.y -= b.speed * dt;
   });
   state.bullets = state.bullets.filter(b => b.y + b.h > -30 && b.x > -30 && b.x < W + 30);
+
+  state.missiles.forEach(m => {
+    let target = m.target;
+    if (!target || target.hp <= 0) {
+      target = (state.boss && state.boss.hp > 0) ? state.boss : state.enemies.slice().sort((a,b)=>a.y-b.y)[0];
+      m.target = target;
+    }
+    if (target) {
+      const tx = target.x + target.w / 2;
+      const ty = target.y + target.h / 2;
+      const dx = tx - (m.x + m.w / 2);
+      const dy = ty - (m.y + m.h / 2);
+      const len = Math.hypot(dx, dy) || 1;
+      m.x += (dx / len) * m.speed * 0.65 * dt;
+      m.y += (dy / len) * m.speed * dt;
+    } else {
+      m.y -= m.speed * dt;
+    }
+  });
 
   state.enemyBullets.forEach(b => {
     b.x += b.vx * dt;
@@ -391,6 +426,36 @@ function update(dt) {
     }
   }
 
+  for (const m of state.missiles) {
+    for (const enemy of state.enemies) {
+      if (enemy.hp > 0 && intersects(m, enemy)) {
+        enemy.hp -= 3;
+        explode(m.x + m.w/2, m.y + m.h/2, '#ffb347', 10, 120);
+        m.y = -999;
+        if (enemy.hp <= 0) defeatEnemy(enemy);
+        break;
+      }
+    }
+    if (state.boss && state.boss.hp > 0 && intersects(m, state.boss)) {
+      state.boss.hp -= 4;
+      explode(m.x + m.w/2, m.y + m.h/2, '#ffb347', 12, 140);
+      m.y = -999;
+      if (state.boss.hp <= 0) {
+        state.score += 2500;
+        explode(state.boss.x + state.boss.w / 2, state.boss.y + state.boss.h / 2, '#ffb347', 80, 360);
+        playSound('boom');
+        state.boss = null;
+        state.message = 'Boss down!';
+        state.messageTimer = 2.5;
+        p.bombs = Math.min(5, p.bombs + 1);
+        spawnPowerUp(W / 2 - 12, 140);
+        updateHud();
+      }
+      updateBossHud();
+    }
+  }
+  state.missiles = state.missiles.filter(m => m.y > -40 && m.y < H + 40);
+
   state.enemies = state.enemies.filter(e => e.hp > 0 && e.y < H + 60 && e.x > -120 && e.x < W + 120);
 
   state.powerUps.forEach(item => {
@@ -398,8 +463,9 @@ function update(dt) {
     if (intersects(item, p)) {
       item.y = H + 999;
       if (item.type === 'power') p.power = Math.min(5, p.power + 1);
-      else p.bombs = Math.min(5, p.bombs + 1);
-      state.message = item.type === 'power' ? 'Weapon up!' : 'Bomb acquired!';
+      else if (item.type === 'bomb') p.bombs = Math.min(5, p.bombs + 1);
+      else p.missiles = Math.min(4, p.missiles + 1);
+      state.message = item.type === 'power' ? 'Weapon up!' : item.type === 'bomb' ? 'Bomb acquired!' : 'Missiles online!';
       state.messageTimer = 1.2;
       updateHud();
     }
@@ -416,16 +482,31 @@ function update(dt) {
 
 function drawBackground() {
   const grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0, '#0c1e38');
+  grad.addColorStop(0, '#12345a');
+  grad.addColorStop(0.55, '#0b2340');
   grad.addColorStop(1, '#08111f');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
 
-  ctx.strokeStyle = 'rgba(120,190,255,0.06)';
-  for (let y = 0; y < H; y += 48) {
+  const t = performance.now() * 0.03;
+  ctx.fillStyle = 'rgba(28, 95, 58, 0.22)';
+  for (let i = 0; i < 6; i++) {
+    const y = ((i * 170) + t * (0.8 + i * 0.08)) % (H + 140) - 140;
     ctx.beginPath();
-    ctx.moveTo(0, (y + performance.now() * 0.02) % (H + 48));
-    ctx.lineTo(W, (y + performance.now() * 0.02) % (H + 48));
+    ctx.moveTo(0, y + 70);
+    ctx.quadraticCurveTo(W * 0.25, y, W * 0.5, y + 55);
+    ctx.quadraticCurveTo(W * 0.75, y + 110, W, y + 30);
+    ctx.lineTo(W, y + 160);
+    ctx.lineTo(0, y + 160);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  ctx.strokeStyle = 'rgba(120,190,255,0.05)';
+  for (let y = 0; y < H; y += 56) {
+    ctx.beginPath();
+    ctx.moveTo(0, (y + t) % (H + 56));
+    ctx.lineTo(W, (y + t) % (H + 56));
     ctx.stroke();
   }
 
@@ -471,14 +552,14 @@ function draw() {
   drawBackground();
 
   state.powerUps.forEach(i => {
-    ctx.fillStyle = i.type === 'power' ? '#64f0ff' : '#ff7f50';
+    ctx.fillStyle = i.type === 'power' ? '#64f0ff' : i.type === 'bomb' ? '#ff7f50' : '#ffd166';
     ctx.beginPath();
     ctx.arc(i.x + 12, i.y + 12, 12, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = '#031018';
     ctx.font = 'bold 14px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(i.type === 'power' ? 'P' : 'B', i.x + 12, i.y + 17);
+    ctx.fillText(i.type === 'power' ? 'P' : i.type === 'bomb' ? 'B' : 'M', i.x + 12, i.y + 17);
   });
 
   state.bullets.forEach(b => {
@@ -489,6 +570,15 @@ function draw() {
   state.enemyBullets.forEach(b => {
     ctx.fillStyle = b.color;
     ctx.fillRect(b.x, b.y, b.w, b.h);
+  });
+
+  state.missiles.forEach(m => {
+    if (images.missile.complete && images.missile.naturalWidth) {
+      ctx.drawImage(images.missile, m.x, m.y, m.w, m.h);
+    } else {
+      ctx.fillStyle = '#ffd166';
+      ctx.fillRect(m.x, m.y, m.w, m.h);
+    }
   });
 
   state.enemies.forEach(e => {

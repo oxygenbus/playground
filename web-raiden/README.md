@@ -11,6 +11,7 @@ A bigger browser shoot-'em-up inspired by vertical arcade shooters like **Raiden
 - bombs
 - boss fights
 - local high score save
+- homing missile support
 - touch controls for phones/tablets
 
 ## Run locally
