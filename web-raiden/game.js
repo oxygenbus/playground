@@ -65,6 +65,9 @@ const state = {
   score: 0,
   spawnTimer: 0,
   wave: 1,
+  stage: 1,
+  stageTimer: 0,
+  bossCooldown: 0,
   boss: null,
   highscore: Number(localStorage.getItem(HIGH_KEY) || 0),
   message: '',
@@ -100,6 +103,7 @@ function resetGame() {
     power: 1,
     missileCooldown: 0,
     missiles: 0,
+    missileLevel: 0,
     missileSide: 0,
   };
   state.bullets = [];
@@ -111,6 +115,9 @@ function resetGame() {
   state.score = 0;
   state.spawnTimer = 0;
   state.wave = 1;
+  state.stage = 1;
+  state.stageTimer = 0;
+  state.bossCooldown = 6;
   state.boss = null;
   state.message = 'Stage 1';
   state.messageTimer = 2;
@@ -134,7 +141,7 @@ function updateHud() {
   scoreEl.textContent = state.score;
   livesEl.textContent = state.player.lives;
   bombsEl.textContent = state.player.bombs;
-  powerEl.textContent = `${state.player.power}/${state.player.missiles}`;
+  powerEl.textContent = `${state.player.power}/${state.player.missileLevel}`;
   if (state.score > state.highscore) {
     state.highscore = state.score;
     localStorage.setItem(HIGH_KEY, String(state.highscore));
@@ -167,23 +174,25 @@ function spawnPowerUp(x, y) {
 }
 
 function spawnEnemy() {
-  const wave = state.wave;
+  const stage = state.stage;
   const typeRoll = Math.random();
   let type = 'grunt';
-  if (wave >= 2 && typeRoll > 0.72) type = 'zigzag';
-  if (wave >= 3 && typeRoll > 0.88) type = 'turret';
-  const size = type === 'turret' ? 58 : rand(34, 48);
+  if (stage >= 1 && typeRoll > 0.60) type = 'zigzag';
+  if (stage >= 2 && typeRoll > 0.83) type = 'turret';
+  if (stage >= 3 && typeRoll > 0.92) type = 'ace';
+  const size = type === 'turret' ? 58 : type === 'ace' ? 52 : rand(34, 48);
   state.enemies.push({
     kind: type,
     x: rand(10, W - size - 10),
     y: -size,
     w: size,
     h: size,
-    speed: rand(78, 125) + wave * 5,
-    hp: type === 'turret' ? 8 : type === 'zigzag' ? 4 : 2,
-    maxHp: type === 'turret' ? 8 : type === 'zigzag' ? 4 : 2,
+    speed: rand(78, 120) + stage * 4,
+    hp: type === 'turret' ? 8 : type === 'zigzag' ? 4 : type === 'ace' ? 5 : 2,
+    maxHp: type === 'turret' ? 8 : type === 'zigzag' ? 4 : type === 'ace' ? 5 : 2,
     phase: Math.random() * Math.PI * 2,
     fireCooldown: rand(0.8, 1.8),
+    skin: Math.random() < 0.5 ? 0 : 1,
   });
 }
 
@@ -269,7 +278,7 @@ function hitPlayer() {
 }
 
 function defeatEnemy(enemy) {
-  state.score += enemy.kind === 'turret' ? 220 : enemy.kind === 'zigzag' ? 140 : 80;
+  state.score += enemy.kind === 'turret' ? 220 : enemy.kind === 'zigzag' ? 140 : enemy.kind === 'ace' ? 180 : 80;
   explode(enemy.x + enemy.w / 2, enemy.y + enemy.h / 2, enemy.kind === 'turret' ? '#ffb347' : '#64f0ff', enemy.kind === 'turret' ? 18 : 10);
   if (Math.random() < 0.16) spawnPowerUp(enemy.x + enemy.w / 2 - 12, enemy.y + enemy.h / 2 - 12);
   playSound('boom');
@@ -282,6 +291,13 @@ function update(dt) {
   p.cooldown = Math.max(0, p.cooldown - dt);
   p.missileCooldown = Math.max(0, p.missileCooldown - dt);
   if (state.messageTimer > 0) state.messageTimer -= dt;
+  state.stageTimer += dt;
+  state.bossCooldown = Math.max(0, state.bossCooldown - dt);
+  const STAGE_LENGTH = 28;
+  if (!state.boss && state.stageTimer >= STAGE_LENGTH && state.bossCooldown <= 0) {
+    spawnBoss();
+    state.bossCooldown = 9999;
+  }
 
   let dx = 0, dy = 0;
   if (keys.has('arrowleft') || keys.has('a')) dx -= 1;
@@ -303,9 +319,13 @@ function update(dt) {
     shootPlayer();
     p.cooldown = 0.16;
   }
-  if (p.missiles > 0 && p.missileCooldown <= 0) {
-    const count = Math.min(2, p.missiles);
-    const offsets = count === 1 ? [0] : [-16, 16];
+  if (p.missileLevel > 0 && p.missileCooldown <= 0) {
+    const patterns = {
+      1: [-18, 18],
+      2: [-22, 22, 0],
+      3: [-24, 24, -8, 8],
+    };
+    const offsets = patterns[p.missileLevel] || patterns[1];
     offsets.forEach((off, idx) => {
       state.missiles.push({
         x: p.x + p.w / 2 - 8 + off,
@@ -332,16 +352,11 @@ function update(dt) {
     }
   });
 
-  if (!state.boss && state.score > 0 && state.score % 3000 < 120 && state.score >= state.wave * 3000) {
-    state.wave += 1;
-    spawnBoss();
-  }
-
   if (!state.boss) {
     state.spawnTimer -= dt;
     if (state.spawnTimer <= 0) {
       spawnEnemy();
-      state.spawnTimer = Math.max(0.52, 1.05 - state.wave * 0.02) + Math.random() * 0.32;
+      state.spawnTimer = Math.max(0.5, 1.05 - state.stage * 0.02) + Math.random() * 0.32;
     }
   }
 
@@ -377,13 +392,16 @@ function update(dt) {
       enemy.x += Math.sin(enemy.y / 45 + enemy.phase) * 110 * dt;
     } else if (enemy.kind === 'turret') {
       enemy.y += enemy.speed * 0.6 * dt;
+    } else if (enemy.kind === 'ace') {
+      enemy.y += enemy.speed * 0.9 * dt;
+      enemy.x += Math.sin(enemy.y / 30 + enemy.phase) * 160 * dt;
     } else {
       enemy.y += enemy.speed * dt;
     }
     enemy.fireCooldown -= dt;
     if (enemy.fireCooldown <= 0 && enemy.y > 40) {
       shootEnemy(enemy, enemy.kind === 'turret' ? 'spread' : 'single');
-      enemy.fireCooldown = enemy.kind === 'turret' ? 1.85 : rand(1.6, 2.8);
+      enemy.fireCooldown = enemy.kind === 'turret' ? 1.85 : enemy.kind === 'ace' ? rand(1.0, 1.6) : rand(1.6, 2.8);
     }
     if (intersects(enemy, p)) {
       enemy.hp = 0;
@@ -428,7 +446,10 @@ function update(dt) {
         explode(state.boss.x + state.boss.w / 2, state.boss.y + state.boss.h / 2, '#ffb347', 80, 360);
         playSound('boom');
         state.boss = null;
-        state.message = 'Boss down!';
+        state.stage += 1;
+        state.stageTimer = 0;
+        state.bossCooldown = 6;
+        state.message = `Stage ${state.stage}`;
         state.messageTimer = 2.5;
         p.bombs = Math.min(5, p.bombs + 1);
         spawnPowerUp(W / 2 - 12, 140);
@@ -457,7 +478,10 @@ function update(dt) {
         explode(state.boss.x + state.boss.w / 2, state.boss.y + state.boss.h / 2, '#ffb347', 80, 360);
         playSound('boom');
         state.boss = null;
-        state.message = 'Boss down!';
+        state.stage += 1;
+        state.stageTimer = 0;
+        state.bossCooldown = 6;
+        state.message = `Stage ${state.stage}`;
         state.messageTimer = 2.5;
         p.bombs = Math.min(5, p.bombs + 1);
         spawnPowerUp(W / 2 - 12, 140);
@@ -476,8 +500,8 @@ function update(dt) {
       item.y = H + 999;
       if (item.type === 'power') p.power = Math.min(5, p.power + 1);
       else if (item.type === 'bomb') p.bombs = Math.min(5, p.bombs + 1);
-      else p.missiles = Math.min(6, p.missiles + 1);
-      state.message = item.type === 'power' ? 'Weapon up!' : item.type === 'bomb' ? 'Bomb acquired!' : 'Missiles online!';
+      else p.missileLevel = Math.min(3, p.missileLevel + 1);
+      state.message = item.type === 'power' ? 'Weapon up!' : item.type === 'bomb' ? 'Bomb acquired!' : 'Missiles enhanced!';
       state.messageTimer = 1.2;
       updateHud();
     }
@@ -601,8 +625,12 @@ function draw() {
   });
 
   state.enemies.forEach(e => {
-    const enemyImage = e.kind === 'turret' ? images.enemyTurret : e.kind === 'zigzag' ? images.enemyAlt : images.enemy;
-    drawShip(e, enemyImage, e.kind === 'turret' ? '#ff9f43' : '#ff5f7a');
+    let enemyImage = images.enemy;
+    if (e.kind === 'turret') enemyImage = images.enemyTurret;
+    else if (e.kind === 'zigzag') enemyImage = e.skin ? images.enemyAlt : images.enemy;
+    else if (e.kind === 'ace') enemyImage = images.enemyAlt;
+    else enemyImage = e.skin ? images.enemyAlt : images.enemy;
+    drawShip(e, enemyImage, e.kind === 'turret' ? '#ff9f43' : e.kind === 'ace' ? '#ffd166' : '#ff5f7a');
     if (e.kind !== 'grunt') {
       ctx.fillStyle = 'rgba(0,0,0,0.35)';
       ctx.fillRect(e.x, e.y - 7, e.w, 4);
