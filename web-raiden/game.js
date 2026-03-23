@@ -336,9 +336,11 @@ function update(dt) {
       shootEnemy(enemy, enemy.kind === 'turret' ? 'spread' : 'single');
       enemy.fireCooldown = enemy.kind === 'turret' ? 1.4 : rand(1.2, 2.4);
     }
-    if (intersects(enemy, p) || enemy.y > H + 30) {
+    if (intersects(enemy, p)) {
       enemy.hp = 0;
       hitPlayer();
+    } else if (enemy.y > H + 30) {
+      enemy.hp = 0;
     }
   }
 
@@ -387,7 +389,7 @@ function update(dt) {
     }
   }
 
-  state.enemies = state.enemies.filter(e => e.hp > 0 && e.y < H + 60);
+  state.enemies = state.enemies.filter(e => e.hp > 0 && e.y < H + 60 && e.x > -120 && e.x < W + 120);
 
   state.powerUps.forEach(item => {
     item.y += item.speed * dt;
