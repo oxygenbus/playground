@@ -66,7 +66,7 @@ const STAGES = [
       { gap: 0.7, formation: 'arc', enemies: ['sweeper','zigzag','gunship','grunt','sweeper'] },
     ],
     miniboss: { kind: 'gunshipElite', label: 'Aegis Interceptor' },
-    boss: { kind: 'carrier', label: 'Coastbreaker Carrier', hp: 190 },
+    boss: { kind: 'carrier', label: 'Coastbreaker Carrier', hp: 184 },
   },
   {
     id: 2,
@@ -82,7 +82,7 @@ const STAGES = [
       { gap: 0.68, formation: 'arc', enemies: ['gunship','grunt','ace','zigzag','sweeper'] },
     ],
     miniboss: { kind: 'gunshipElite', label: 'Harrier Command Ship' },
-    boss: { kind: 'carrier', label: 'Redwake Flag Carrier', hp: 235 },
+    boss: { kind: 'carrier', label: 'Redwake Flag Carrier', hp: 224 },
   },
   {
     id: 3,
@@ -98,7 +98,7 @@ const STAGES = [
       { gap: 0.64, formation: 'columns', enemies: ['ace','zigzag','turret','ace','sweeper','zigzag'] },
     ],
     miniboss: { kind: 'stormCore', label: 'Tempest Core' },
-    boss: { kind: 'dreadnought', label: 'Storm Dreadnought', hp: 275 },
+    boss: { kind: 'dreadnought', label: 'Storm Dreadnought', hp: 262 },
   },
   {
     id: 4,
@@ -114,7 +114,7 @@ const STAGES = [
       { gap: 0.58, formation: 'centerRush', enemies: ['turret','ace','zigzag','ace','turret','ace'] },
     ],
     miniboss: { kind: 'stormCore', label: 'Blackout Reactor' },
-    boss: { kind: 'dreadnought', label: 'Nightspike Arsenal', hp: 325 },
+    boss: { kind: 'dreadnought', label: 'Nightspike Arsenal', hp: 308 },
   },
   {
     id: 5,
@@ -130,7 +130,7 @@ const STAGES = [
       { gap: 0.54, formation: 'centerRush', enemies: ['ace','sweeper','turret','gunship','ace','turret'] },
     ],
     miniboss: { kind: 'forgeEye', label: 'Forge Eye' },
-    boss: { kind: 'overlord', label: 'Molten Bastion', hp: 380 },
+    boss: { kind: 'overlord', label: 'Molten Bastion', hp: 358 },
   },
   {
     id: 6,
@@ -146,7 +146,7 @@ const STAGES = [
       { gap: 0.5, formation: 'centerRush', enemies: ['ace','sweeper','turret','gunship','ace','sweeper','turret'] },
     ],
     miniboss: { kind: 'forgeEye', label: 'Smelter Citadel Eye' },
-    boss: { kind: 'overlord', label: 'Iron Overlord', hp: 445 },
+    boss: { kind: 'overlord', label: 'Iron Overlord', hp: 416 },
   },
   {
     id: 7,
@@ -162,7 +162,7 @@ const STAGES = [
       { gap: 0.46, formation: 'centerRush', enemies: ['ace','sweeper','turret','gunship','ace','turret','gunship'] },
     ],
     miniboss: { kind: 'forgeEye', label: 'Apex Warden' },
-    boss: { kind: 'overlord', label: 'Celestial Tyrant', hp: 520 },
+    boss: { kind: 'overlord', label: 'Celestial Tyrant', hp: 474 },
   },
 ];
 
@@ -446,7 +446,7 @@ function ring(x, y, color, radius = 20, count = 24) {
 
 function spawnPowerUp(x, y, forcedType = null) {
   const roll = Math.random();
-  const type = forcedType || (roll < 0.4 ? 'power' : roll < 0.68 ? 'bomb' : roll < 0.8 ? 'missile' : roll < 0.92 ? 'weapon' : 'life');
+  const type = forcedType || (roll < 0.42 ? 'power' : roll < 0.72 ? 'bomb' : roll < 0.78 ? 'missile' : roll < 0.93 ? 'weapon' : 'life');
   state.powerUps.push({ x, y, w: 28, h: 28, type, speed: 95, bob: Math.random() * 1000 });
 }
 
@@ -599,12 +599,12 @@ function defeatEnemy(enemy) {
   sfx('explode');
   if (enemy.miniBoss) {
     spawnPowerUp(cx - 18, cy - 16, 'weapon');
-    if (Math.random() < 0.55) spawnPowerUp(cx + 14, cy - 20, 'missile');
+    if (Math.random() < 0.35) spawnPowerUp(cx + 14, cy - 20, 'missile');
     spawnPowerUp(cx - 2, cy + 6, 'bomb');
     state.stagePhase = 'bossIntro';
     state.phaseTimer = 2.2;
     pushOverlay('Route Clear', 'Main hostile incoming', 1.8, 'stage');
-  } else if (Math.random() < 0.32 || enemy.kind === 'gunship') {
+  } else if (Math.random() < 0.2 || enemy.kind === 'gunship') {
     spawnPowerUp(cx - 12, cy - 12);
   }
   updateHud();
@@ -632,7 +632,7 @@ function defeatBoss() {
   if (state.stage.id < STAGES.length) state.player.lives = Math.min(5, state.player.lives + 1);
   spawnPowerUp(W / 2 - 50, 160, 'power');
   spawnPowerUp(W / 2 - 12, 180, 'weapon');
-  if (Math.random() < 0.45) spawnPowerUp(W / 2 + 24, 150, 'missile');
+  if (Math.random() < 0.22) spawnPowerUp(W / 2 + 24, 150, 'missile');
   pushOverlay(`Stage ${state.stage.id} Clear`, 'Rearming', 2.1, 'stage');
   updateHud();
   updateBossHud();
@@ -679,22 +679,22 @@ function spawnMissiles() {
   if (p.missileLevel <= 0) return;
   const sets = {
     1: [0],
-    2: [-20, 20],
+    2: [-18, 18],
     3: [-24, 24, 0],
   };
   (sets[p.missileLevel] || sets[1]).forEach((off, idx) => {
     state.missiles.push({
       x: p.x + p.w / 2 - 8 + off,
-      y: p.y + 8,
-      w: 16,
-      h: 24,
-      speed: 248,
-      vx: off === 0 ? 0 : off < 0 ? -52 : 52,
-      armY: p.y - 150,
-      drift: off < 0 ? -0.3 : off > 0 ? 0.3 : 0,
-      turnRate: 148,
+      y: p.y + 10,
+      w: 15,
+      h: 22,
+      speed: 214,
+      vx: off === 0 ? 0 : off < 0 ? -42 : 42,
+      armY: p.y - 210,
+      drift: off < 0 ? -0.22 : off > 0 ? 0.22 : 0,
+      turnRate: 118,
       kind: idx % 2 === 0 ? 'blue' : 'red',
-      damage: 2,
+      damage: off === 0 ? 1 : 1,
     });
   });
   sfx('missile');
@@ -871,17 +871,18 @@ function bossBehavior(dt) {
       sfx('bossShot');
     }
   } else if (b.kind === 'overlord') {
-    b.x = W / 2 - b.w / 2 + Math.sin(b.phase * (0.8 + stageBoost * 0.035)) * 170;
+    const finalStageTuning = state.stage.id === 7 ? 1 : 0;
+    b.x = W / 2 - b.w / 2 + Math.sin(b.phase * (0.75 + stageBoost * 0.028)) * (160 + stageBoost * 2);
     b.fireCooldown -= dt;
     b.altCooldown -= dt;
     if (b.fireCooldown <= 0) {
-      aimedShot(b, 192 + stageBoost * 6, 0.06, 6 + Math.floor(stageBoost / 2), '#ff6b9b');
-      b.fireCooldown = Math.max(0.56, 0.98 - stageBoost * 0.035);
+      aimedShot(b, 184 + stageBoost * 5, 0.055, 5 + Math.floor(stageBoost / 2), '#ff6b9b');
+      b.fireCooldown = Math.max(0.66 + finalStageTuning * 0.05, 1.04 - stageBoost * 0.03);
       sfx('bossShot');
     }
     if (b.altCooldown <= 0) {
-      radialShot(b, 14 + stageBoost, 145 + stageBoost * 3, '#ffb347');
-      b.altCooldown = Math.max(1.45, 2.35 - stageBoost * 0.08);
+      radialShot(b, 12 + Math.floor(stageBoost * 0.8), 136 + stageBoost * 2, '#ffb347');
+      b.altCooldown = Math.max(1.7 + finalStageTuning * 0.08, 2.6 - stageBoost * 0.07);
       sfx('bossShot');
     }
   }
@@ -973,7 +974,7 @@ function update(dt) {
   }
   if (p.missileLevel > 0 && p.missileCooldown <= 0) {
     spawnMissiles();
-    p.missileCooldown = Math.max(0.96, 1.45 - p.missileLevel * 0.14);
+    p.missileCooldown = Math.max(1.28, 1.96 - p.missileLevel * 0.16);
   }
 
   state.stars.forEach(s => {
@@ -1153,6 +1154,42 @@ function update(dt) {
   updateBossHud();
 }
 
+function drawGroundColumns({ palette, laneAlpha = 0.18, detailAlpha = 0.12, skew = 0.16, stripeEvery = 1 } = {}) {
+  const horizon = H * 0.21;
+  for (let row = 0; row < 22; row++) {
+    const depth = row / 21;
+    const y = lerp(horizon, H + 80, depth * depth);
+    const nextDepth = (row + 1) / 21;
+    const nextY = lerp(horizon, H + 86, nextDepth * nextDepth);
+    const halfW = lerp(W * 0.1, W * 0.58, depth);
+    const nextHalfW = lerp(W * 0.12, W * 0.62, nextDepth);
+    const drift = Math.sin((state.terrainOffset * 0.0024) + row * 0.55) * W * skew * (1 - depth);
+    ctx.fillStyle = palette[row % palette.length];
+    ctx.beginPath();
+    ctx.moveTo(W / 2 - halfW + drift, y);
+    ctx.lineTo(W / 2 + halfW + drift, y);
+    ctx.lineTo(W / 2 + nextHalfW + drift * 0.78, nextY);
+    ctx.lineTo(W / 2 - nextHalfW + drift * 0.78, nextY);
+    ctx.closePath();
+    ctx.fill();
+    if (row % stripeEvery === 0) {
+      ctx.strokeStyle = `rgba(255,255,255,${laneAlpha * (0.3 + depth * 0.9)})`;
+      ctx.lineWidth = 1 + depth * 1.2;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 + drift * 0.95, y + 2);
+      ctx.lineTo(W / 2 + drift * 0.72, nextY - 4);
+      ctx.stroke();
+    }
+    const segments = 4;
+    for (let s = 0; s < segments; s++) {
+      const t = (s + 0.5) / segments - 0.5;
+      const cx = W / 2 + drift + t * halfW * 1.6;
+      ctx.fillStyle = `rgba(255,255,255,${detailAlpha * (0.16 + depth * 0.75)})`;
+      ctx.fillRect(cx, y + 4, 2 + depth * 2, Math.max(2, (nextY - y) * 0.28));
+    }
+  }
+}
+
 function drawTerrain() {
   const stage = state.stage;
   const [c1, c2, c3] = stage.sky;
@@ -1178,7 +1215,18 @@ function drawTerrain() {
     ctx.fillRect(0, bandY, W, 1);
   }
 
+  const horizon = H * 0.21;
+  ctx.fillStyle = 'rgba(255,255,255,0.03)';
+  ctx.fillRect(0, horizon, W, 2);
+
   if (stage.terrain === 'islands') {
+    drawGroundColumns({
+      palette: ['rgba(22,70,108,0.26)', 'rgba(34,104,86,0.24)', 'rgba(17,56,92,0.22)', 'rgba(58,122,88,0.18)'],
+      laneAlpha: 0.1,
+      detailAlpha: 0.07,
+      skew: 0.14,
+      stripeEvery: 2,
+    });
     for (let i = 0; i < 7; i++) {
       const y = ((i * 154) + state.terrainOffset * (0.7 + i * 0.05)) % (H + 220) - 220;
       ctx.fillStyle = i % 2 ? 'rgba(42, 126, 88, 0.26)' : 'rgba(24, 74, 120, 0.22)';
@@ -1193,6 +1241,13 @@ function drawTerrain() {
       ctx.fill();
       ctx.fillStyle = 'rgba(190, 255, 220, 0.05)';
       ctx.fillRect(0, y + 104, W, 2);
+      ctx.strokeStyle = 'rgba(160, 220, 255, 0.08)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(W * 0.18, y + 32);
+      ctx.quadraticCurveTo(W * 0.35, y + 94, W * 0.52, y + 76);
+      ctx.quadraticCurveTo(W * 0.7, y + 52, W * 0.82, y + 118);
+      ctx.stroke();
     }
     for (let i = 0; i < 11; i++) {
       const y = ((i * 92) + state.terrainOffset * (1.16 + i * 0.02)) % (H + 120) - 120;
@@ -1204,6 +1259,13 @@ function drawTerrain() {
       ctx.stroke();
     }
   } else if (stage.terrain === 'clouds') {
+    drawGroundColumns({
+      palette: ['rgba(165,186,230,0.08)', 'rgba(96,122,184,0.08)', 'rgba(220,230,255,0.06)'],
+      laneAlpha: 0.08,
+      detailAlpha: 0.05,
+      skew: 0.08,
+      stripeEvery: 3,
+    });
     for (let i = 0; i < 12; i++) {
       const y = ((i * 96) + state.terrainOffset * (0.85 + i * 0.02)) % (H + 160) - 160;
       const xShift = ((i * 130) % W);
@@ -1230,6 +1292,13 @@ function drawTerrain() {
     }
     ctx.lineWidth = 1;
   } else if (stage.terrain === 'lava') {
+    drawGroundColumns({
+      palette: ['rgba(118,28,20,0.24)', 'rgba(172,54,28,0.2)', 'rgba(78,18,14,0.22)', 'rgba(255,118,44,0.1)'],
+      laneAlpha: 0.09,
+      detailAlpha: 0.08,
+      skew: 0.12,
+      stripeEvery: 2,
+    });
     for (let i = 0; i < 9; i++) {
       const y = ((i * 102) + state.terrainOffset * (0.95 + i * 0.04)) % (H + 180) - 160;
       ctx.fillStyle = i % 2 ? 'rgba(255,88,40,0.14)' : 'rgba(120,30,22,0.18)';
@@ -1250,6 +1319,13 @@ function drawTerrain() {
       }
     }
   } else if (stage.terrain === 'voidstorm') {
+    drawGroundColumns({
+      palette: ['rgba(48,26,90,0.18)', 'rgba(74,34,130,0.16)', 'rgba(28,16,68,0.18)'],
+      laneAlpha: 0.08,
+      detailAlpha: 0.06,
+      skew: 0.18,
+      stripeEvery: 2,
+    });
     for (let i = 0; i < 11; i++) {
       const y = ((i * 92) + state.terrainOffset * (1.02 + i * 0.04)) % (H + 220) - 180;
       const purple = 80 + i * 10;

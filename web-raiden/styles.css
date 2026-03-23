@@ -40,9 +40,9 @@ body::before {
   display: grid;
   justify-items: center;
   width: min(100%, 1440px);
-  padding: 20px 24px 26px;
+  padding: 28px 24px 26px;
   border-radius: 34px;
-  background: linear-gradient(180deg, rgba(9, 16, 28, 0.72), rgba(5, 9, 18, 0.44));
+  background: linear-gradient(180deg, rgba(9, 16, 28, 0.8), rgba(5, 9, 18, 0.5));
   border: 1px solid rgba(255,255,255,0.06);
   box-shadow: 0 28px 90px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.04);
 }
@@ -53,6 +53,31 @@ body::before {
   border-radius: 26px;
   border: 1px solid rgba(100, 240, 255, 0.08);
   pointer-events: none;
+}
+.hero-copy {
+  width: min(100%, 920px);
+  text-align: center;
+  margin: 0 0 20px;
+}
+.hero-kicker {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #9fdfff;
+}
+.hero-copy h1 {
+  margin: 8px 0 10px;
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: .95;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.hero-copy p {
+  margin: 0 auto;
+  max-width: 62ch;
+  color: var(--text-dim);
+  line-height: 1.6;
 }
 #game {
   border: 1px solid rgba(255,255,255,.12);
@@ -144,7 +169,7 @@ body::before {
   padding: 36px 40px;
   text-align: center;
   box-shadow: 0 20px 80px rgba(0,0,0,.5);
-  max-width: 560px;
+  max-width: 580px;
 }
 .eyebrow {
   color: #b7d8ff;
@@ -167,7 +192,7 @@ body::before {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  margin: 20px 0;
+  margin: 20px 0 14px;
   text-align: left;
 }
 .controls div {
@@ -183,6 +208,23 @@ body::before {
 .controls span {
   color: var(--text-dim);
   font-size: 13px;
+}
+.launch-strip {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.launch-strip span,
+.feature-badges span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #d7f4ff;
+  font-size: 12px;
+  letter-spacing: .04em;
 }
 .hint { color: #c8f0ff; font-weight: 700; }
 .actions {
@@ -245,6 +287,18 @@ body::before {
   padding: 18px 20px;
   border-radius: 20px;
 }
+.feature-card {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+}
+.feature-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
 .note-card h2 {
   margin: 6px 0 8px;
   font-size: 22px;
@@ -284,6 +338,7 @@ body::before {
 
 @media (max-width: 920px) {
   body { padding-inline: 12px; }
+  .hero-copy { margin-top: 12px; }
   #game { width: min(100vw - 24px, 720px); }
   .hud {
     gap: 8px;
@@ -297,8 +352,13 @@ body::before {
     padding: 28px 22px;
     max-width: 460px;
   }
+  .feature-card,
   .note-grid {
     grid-template-columns: 1fr;
+    display: grid;
+  }
+  .feature-badges {
+    justify-content: flex-start;
   }
 }
 

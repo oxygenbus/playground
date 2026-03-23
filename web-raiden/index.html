@@ -4,15 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sky Raid — 7-Stage Desktop Arcade Shooter</title>
-  <meta name="description" content="Sky Raid is a lightweight desktop-first browser shooter with a full 7-stage campaign, minibosses, bosses, punchy synth audio, and no build step." />
+  <meta name="description" content="Sky Raid is a desktop-first 7-stage browser shooter with terrain-forward backgrounds, minibosses, bosses, punchy synth audio, and no build step." />
   <meta name="theme-color" content="#08111f" />
   <meta property="og:title" content="Sky Raid" />
-  <meta property="og:description" content="A desktop-first 7-stage browser shoot-'em-up with minibosses, bosses, and a clean GitHub Pages-ready landing screen." />
+  <meta property="og:description" content="A desktop-first 7-stage browser shoot-'em-up with terrain-forward stage art, cleaner missile balance, and GitHub Pages-friendly static hosting." />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/images/player.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="shell">
+    <div class="hero-copy" aria-hidden="true">
+      <span class="hero-kicker">Desktop arcade run</span>
+      <h1>Sky Raid</h1>
+      <p>Seven stages, cleaner support-missile tuning, heavier terrain read from the sky, and a live-facing static build that still drops cleanly onto GitHub Pages.</p>
+    </div>
+
     <div class="hud">
       <div class="brand">
         <strong>Sky Raid</strong>
@@ -32,16 +39,23 @@
     <canvas id="game" width="720" height="840" aria-label="Sky Raid game canvas"></canvas>
 
     <section class="page-notes" aria-label="Game details">
-      <div class="note-card">
-        <span class="note-kicker">Campaign</span>
-        <h2>Seven themed stages, one clean desktop run</h2>
-        <p>Emerald Coast to Void Apex, each route keeps the intro → waves → miniboss → boss structure while the pressure climbs in a steadier arc.</p>
+      <div class="note-card feature-card">
+        <div>
+          <span class="note-kicker">Campaign</span>
+          <h2>Seven themed stages, one clean desktop run</h2>
+          <p>Emerald Coast to Void Apex, each route keeps the intro → waves → miniboss → boss structure while the pressure climbs without turning the final act into missile autopilot.</p>
+        </div>
+        <div class="feature-badges">
+          <span>7 stages</span>
+          <span>desktop-first</span>
+          <span>static deploy</span>
+        </div>
       </div>
       <div class="note-grid">
-        <div class="note-pill"><strong>Desktop-first</strong><span>720×840 playfield tuned for keyboard play.</span></div>
-        <div class="note-pill"><strong>No build step</strong><span>Static files only — easy to drop on GitHub Pages.</span></div>
-        <div class="note-pill"><strong>Arcade feel</strong><span>Procedural synth cues plus lightweight stage music.</span></div>
-        <div class="note-pill"><strong>Balanced support fire</strong><span>Missiles help, but the main gun still does the real work.</span></div>
+        <div class="note-pill"><strong>Terrain-forward backdrop</strong><span>Desktop play now reads more like flying over ground instead of floating in abstract bands.</span></div>
+        <div class="note-pill"><strong>Support missiles only</strong><span>Missiles reload slower, hit lighter, and help finish threats rather than erase bosses.</span></div>
+        <div class="note-pill"><strong>Final boss polish</strong><span>Late bosses still pressure you, but the last stretch is tuned to feel fairer and clearer.</span></div>
+        <div class="note-pill"><strong>GitHub Pages friendly</strong><span>No bundler, no build, clean metadata and landing-page presentation for a live static repo.</span></div>
       </div>
     </section>
   </div>
@@ -50,7 +64,7 @@
     <div class="panel" id="panel">
       <div class="eyebrow">7 stages • minibosses • bosses • wide desktop playfield</div>
       <h1>Sky Raid</h1>
-      <p>A broader, tougher desktop-first run with a full seven-stage campaign, sharper pacing, lighter support-missile pressure, and room to dodge properly.</p>
+      <p>A desktop-first shoot-'em-up with a full seven-stage campaign, terrain-heavy sky routes, conservative support missiles, and cleaner endgame tuning.</p>
       <div class="controls">
         <div><strong>Move</strong><span>Arrow keys or WASD</span></div>
         <div><strong>Fire</strong><span>Space or J</span></div>
@@ -58,6 +72,11 @@
         <div><strong>Pause</strong><span>P</span></div>
         <div><strong>Mute</strong><span>M</span></div>
         <div><strong>Restart</strong><span>Enter</span></div>
+      </div>
+      <div class="launch-strip">
+        <span>Main gun does the work</span>
+        <span>Missiles are support</span>
+        <span>Best on desktop</span>
       </div>
       <p class="hint">Press Enter or click Start</p>
       <div class="actions">

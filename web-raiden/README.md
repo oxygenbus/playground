@@ -2,12 +2,12 @@
 
 A lightweight browser shoot-'em-up inspired by Raiden / Sky Force, expanded into a wider desktop-first **7-stage** arcade campaign.
 
-## What shipped in the final pass
+## What shipped in the true final-final pass
 
-- **Missiles rebalanced** so they act as support fire instead of the dominant damage source
-- **Light procedural music pass** layered on top of the existing synth-style SFX
-- **GitHub Pages / landing-page polish** with clearer copy, metadata, and below-the-fold feature cards
-- **General cleanup** while keeping the 7-stage desktop-first structure intact
+- **Missiles pulled back further** so they read as support weapons, not the dominant answer to bosses
+- **Background pass upgraded** with stronger perspective terrain so the game feels more like flying over ground from the sky, especially on desktop
+- **Late-game boss tuning cleaned up** so the last act is still tense without turning messy or grindy
+- **GitHub Pages / landing-page polish** with clearer hero copy, better metadata, and more presentable live-facing notes
 
 ## Campaign
 
@@ -27,7 +27,7 @@ Each stage keeps the same structure — intro, waves, miniboss, boss — while e
 
 - wider playfield and canvas: **720×840**
 - broader HUD and boss bar sized for desktop screens
-- larger overlay panel / intro presentation
+- improved start/menu presentation for a live static page
 - best on keyboard in a modern desktop browser
 
 ## Controls
@@ -39,26 +39,30 @@ Each stage keeps the same structure — intro, waves, miniboss, boss — while e
 - Mute: M
 - Start / Restart: Enter
 
-## Missile balance notes
+## Final-final balance notes
 
-The final tuning intentionally pulls missiles back from "free boss delete" territory:
+### Missiles
 
-- level 1 now launches **1 missile** instead of 2
-- level 2 launches **2 missiles** instead of 3
-- level 3 launches **3 missiles** instead of 4
-- missile damage reduced from **4** to **2**
-- extra boss bonus damage removed
-- homing is slower and arms later, so missiles track less aggressively
-- reload cadence reduced to roughly **1.31s / 1.17s / 1.03s** by level instead of a rapid sub-second stream
-- missile drops are less common from random drops, minibosses, and bosses
+Missiles were reduced again so the main gun remains the primary weapon:
 
-That keeps the main gun, positioning, and bomb timing as the core skill expression.
+- slower reload cadence: roughly **1.8s / 1.64s / 1.48s** by level
+- slower travel and weaker turn rate, so they home later and less aggressively
+- damage reduced to a light support hit
+- missile drop rates reduced across random drops, miniboss clears, and boss clears
 
-## Audio notes
+### Bosses
 
-- Sound still unlocks on first interaction because browsers block autoplay audio.
-- The release pass adds a lightweight procedural music loop that shifts intensity during normal waves, minibosses, and bosses.
-- No asset pipeline or build step required.
+- all stage bosses got a small HP trim
+- overlord-family bosses were softened slightly in both aimed and radial pressure
+- the final stage boss got the most conservative tuning so the last clear feels fairer, not flatter
+
+## Visual notes
+
+The background pass now emphasizes a higher-altitude forward flight feel:
+
+- broader terrain lanes and striping that read like land/water seen from above
+- stronger horizon definition
+- terrain-specific perspective layers for coast, storm, lava, and void routes
 
 ## Run locally
 
