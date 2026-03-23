@@ -30,4 +30,5 @@ Then open:
 - Move: Arrow keys or WASD
 - Fire: Space / J
 - Bomb: B
+- Pause: P
 - Start / Restart: Enter

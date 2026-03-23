@@ -40,6 +40,7 @@ images.star.src = 'assets/images/star.svg';
 const HIGH_KEY = 'skyraid-highscore';
 let lastTime = 0;
 let running = false;
+let paused = false;
 let gameOver = false;
 
 const state = {
@@ -107,6 +108,7 @@ function resetGame() {
     layer: Math.random(),
   }));
   running = true;
+  paused = false;
   gameOver = false;
   overlay.classList.add('hidden');
   updateHud();
@@ -525,8 +527,18 @@ function draw() {
 function loop(ts) {
   const dt = Math.min(0.033, (ts - lastTime) / 1000 || 0);
   lastTime = ts;
-  if (running) update(dt);
+  if (running && !paused) update(dt);
   draw();
+  if (paused) {
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 34px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('PAUSED', W / 2, H / 2);
+    ctx.font = '16px sans-serif';
+    ctx.fillText('Press P to resume', W / 2, H / 2 + 28);
+  }
   requestAnimationFrame(loop);
 }
 
@@ -535,7 +547,8 @@ window.addEventListener('keydown', (e) => {
   keys.add(key);
   if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(key)) e.preventDefault();
   if (key === 'enter' && !running) startGame();
-  if (key === 'b' && running) bomb();
+  if (key === 'p' && running) paused = !paused;
+  if (key === 'b' && running && !paused) bomb();
 });
 window.addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
 
