@@ -33,11 +33,19 @@ const images = {
   enemy: new Image(),
   star: new Image(),
   missile: new Image(),
+  missileRed: new Image(),
+  enemyAlt: new Image(),
+  enemyTurret: new Image(),
+  boss: new Image(),
 };
 images.player.src = 'assets/images/player.png';
 images.enemy.src = 'assets/images/enemy.png';
 images.star.src = 'assets/images/star.svg';
 images.missile.src = 'assets/images/missile.svg';
+images.missileRed.src = 'assets/images/missile-red.svg';
+images.enemyAlt.src = 'assets/images/enemy-alt.svg';
+images.enemyTurret.src = 'assets/images/enemy-turret.svg';
+images.boss.src = 'assets/images/boss.svg';
 
 const HIGH_KEY = 'skyraid-highscore';
 let lastTime = 0;
@@ -92,6 +100,7 @@ function resetGame() {
     power: 1,
     missileCooldown: 0,
     missiles: 0,
+    missileSide: 0,
   };
   state.bullets = [];
   state.enemyBullets = [];
@@ -215,11 +224,11 @@ function shootEnemy(enemy, pattern = 'single') {
   const cx = enemy.x + enemy.w / 2;
   const cy = enemy.y + enemy.h - 4;
   if (pattern === 'spread') {
-    [-120, -60, 0, 60, 120].forEach(vx => state.enemyBullets.push({ x: cx, y: cy, w: 8, h: 12, vx: vx * 0.72, vy: 165, color: '#ff9f43' }));
+    [-120, -60, 0, 60, 120].forEach(vx => state.enemyBullets.push({ x: cx, y: cy, w: 10, h: 10, vx: vx * 0.72, vy: 165, color: '#ff9f43' }));
   } else if (pattern === 'fan') {
     [-140, -70, 0, 70, 140].forEach(vx => state.enemyBullets.push({ x: cx, y: cy, w: 8, h: 14, vx: vx * 0.68, vy: 195, color: '#ff5f7a' }));
   } else {
-    state.enemyBullets.push({ x: cx, y: cy, w: 8, h: 14, vx: 0, vy: 185, color: '#ff5f7a' });
+    state.enemyBullets.push({ x: cx, y: cy, w: 6, h: 16, vx: 0, vy: 185, color: '#9b6bff' });
   }
 }
 
@@ -294,12 +303,24 @@ function update(dt) {
     shootPlayer();
     p.cooldown = 0.16;
   }
-  if (p.missiles > 0 && p.missileCooldown <= 0 && (state.enemies.length || state.boss)) {
-    const target = (state.boss && state.boss.hp > 0) ? state.boss : state.enemies.slice().sort((a,b)=>a.y-b.y)[0];
-    if (target) {
-      state.missiles.push({ x: p.x + p.w / 2 - 8, y: p.y + 8, w: 16, h: 24, speed: 260, turn: 4.2, target });
-      p.missileCooldown = 1.15;
-    }
+  if (p.missiles > 0 && p.missileCooldown <= 0) {
+    const count = Math.min(2, p.missiles);
+    const offsets = count === 1 ? [0] : [-16, 16];
+    offsets.forEach((off, idx) => {
+      state.missiles.push({
+        x: p.x + p.w / 2 - 8 + off,
+        y: p.y + 10,
+        w: 16,
+        h: 24,
+        speed: 300,
+        vx: off < 0 ? -85 : off > 0 ? 85 : 0,
+        drift: off < 0 ? -0.55 : off > 0 ? 0.55 : 0,
+        kind: idx % 2 === 0 ? 'blue' : 'red',
+        armY: p.y - 110,
+      });
+    });
+    p.missileSide = (p.missileSide + 1) % 2;
+    p.missileCooldown = 0.9;
   }
 
   state.stars.forEach(s => {
@@ -331,21 +352,12 @@ function update(dt) {
   state.bullets = state.bullets.filter(b => b.y + b.h > -30 && b.x > -30 && b.x < W + 30);
 
   state.missiles.forEach(m => {
-    let target = m.target;
-    if (!target || target.hp <= 0) {
-      target = (state.boss && state.boss.hp > 0) ? state.boss : state.enemies.slice().sort((a,b)=>a.y-b.y)[0];
-      m.target = target;
-    }
-    if (target) {
-      const tx = target.x + target.w / 2;
-      const ty = target.y + target.h / 2;
-      const dx = tx - (m.x + m.w / 2);
-      const dy = ty - (m.y + m.h / 2);
-      const len = Math.hypot(dx, dy) || 1;
-      m.x += (dx / len) * m.speed * 0.65 * dt;
-      m.y += (dy / len) * m.speed * dt;
+    m.y -= m.speed * dt;
+    if (m.y > m.armY) {
+      m.x += m.vx * dt;
+      m.vx *= 0.985;
     } else {
-      m.y -= m.speed * dt;
+      m.x += m.drift * 28 * dt;
     }
   });
 
@@ -454,7 +466,7 @@ function update(dt) {
       updateBossHud();
     }
   }
-  state.missiles = state.missiles.filter(m => m.y > -40 && m.y < H + 40);
+  state.missiles = state.missiles.filter(m => m.y > -60 && m.y < H + 40 && m.x > -40 && m.x < W + 40);
 
   state.enemies = state.enemies.filter(e => e.hp > 0 && e.y < H + 60 && e.x > -120 && e.x < W + 120);
 
@@ -464,7 +476,7 @@ function update(dt) {
       item.y = H + 999;
       if (item.type === 'power') p.power = Math.min(5, p.power + 1);
       else if (item.type === 'bomb') p.bombs = Math.min(5, p.bombs + 1);
-      else p.missiles = Math.min(4, p.missiles + 1);
+      else p.missiles = Math.min(6, p.missiles + 1);
       state.message = item.type === 'power' ? 'Weapon up!' : item.type === 'bomb' ? 'Bomb acquired!' : 'Missiles online!';
       state.messageTimer = 1.2;
       updateHud();
@@ -569,20 +581,28 @@ function draw() {
 
   state.enemyBullets.forEach(b => {
     ctx.fillStyle = b.color;
-    ctx.fillRect(b.x, b.y, b.w, b.h);
+    if (b.color === '#ff9f43') {
+      ctx.beginPath();
+      ctx.arc(b.x + b.w/2, b.y + b.h/2, b.w/2 + 1, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      ctx.fillRect(b.x, b.y, b.w, b.h);
+    }
   });
 
   state.missiles.forEach(m => {
-    if (images.missile.complete && images.missile.naturalWidth) {
-      ctx.drawImage(images.missile, m.x, m.y, m.w, m.h);
+    const img = m.kind === 'red' ? images.missileRed : images.missile;
+    if (img.complete && img.naturalWidth) {
+      ctx.drawImage(img, m.x, m.y, m.w, m.h);
     } else {
-      ctx.fillStyle = '#ffd166';
+      ctx.fillStyle = m.kind === 'red' ? '#ff7f90' : '#ffd166';
       ctx.fillRect(m.x, m.y, m.w, m.h);
     }
   });
 
   state.enemies.forEach(e => {
-    drawShip(e, images.enemy, e.kind === 'turret' ? '#ff9f43' : '#ff5f7a');
+    const enemyImage = e.kind === 'turret' ? images.enemyTurret : e.kind === 'zigzag' ? images.enemyAlt : images.enemy;
+    drawShip(e, enemyImage, e.kind === 'turret' ? '#ff9f43' : '#ff5f7a');
     if (e.kind !== 'grunt') {
       ctx.fillStyle = 'rgba(0,0,0,0.35)';
       ctx.fillRect(e.x, e.y - 7, e.w, 4);
@@ -595,7 +615,7 @@ function draw() {
     ctx.save();
     ctx.shadowBlur = 18;
     ctx.shadowColor = 'rgba(255,95,122,.35)';
-    drawShip(state.boss, images.enemy, '#ff3c6f');
+    drawShip(state.boss, images.boss, '#ff3c6f');
     ctx.restore();
   }
 
