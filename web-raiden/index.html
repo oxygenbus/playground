@@ -2,26 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Sky Raid</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="hud">
-    <div><strong>Sky Raid</strong></div>
-    <div>Score: <span id="score">0</span></div>
-    <div>Lives: <span id="lives">3</span></div>
-    <div>Bombs: <span id="bombs">2</span></div>
+    <div class="brand">
+      <strong>Sky Raid</strong>
+      <span class="subtitle">arcade mode</span>
+    </div>
+    <div>Score <span id="score">0</span></div>
+    <div>Lives <span id="lives">3</span></div>
+    <div>Bombs <span id="bombs">2</span></div>
+    <div>Power <span id="power">1</span></div>
+    <div>High <span id="highscore">0</span></div>
   </div>
+
+  <div class="boss-wrap"><div id="bossbar"></div></div>
   <canvas id="game" width="480" height="720"></canvas>
+
   <div class="overlay" id="overlay">
-    <div class="panel">
+    <div class="panel" id="panel">
       <h1>Sky Raid</h1>
-      <p>Arrow keys / WASD to move</p>
-      <p>Space to fire • B to bomb</p>
-      <p>Press Enter to start</p>
+      <p>A small Sky Force / Raiden-style browser shooter.</p>
+      <p>Move: Arrow keys or WASD</p>
+      <p>Fire: Space / auto-fire on mobile</p>
+      <p>Bomb: B</p>
+      <p class="hint">Press Enter to start</p>
     </div>
   </div>
+
+  <div class="touch-ui">
+    <div class="stick-wrap">
+      <div class="stick" id="stick"><div class="stick-knob" id="stickKnob"></div></div>
+    </div>
+    <div class="touch-buttons">
+      <button id="fireBtn">FIRE</button>
+      <button id="bombBtn">BOMB</button>
+    </div>
+  </div>
+
   <script src="game.js"></script>
 </body>
 </html>

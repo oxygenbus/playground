@@ -1,10 +1,21 @@
 # Sky Raid
 
-A small browser shoot-'em-up inspired by vertical arcade shooters like Raiden / Sky Force.
+A bigger browser shoot-'em-up inspired by vertical arcade shooters like **Raiden** and **Sky Force**.
+
+## Features
+
+- scrolling arcade background
+- multiple enemy types
+- enemy bullets
+- weapon power-ups
+- bombs
+- boss fights
+- local high score save
+- touch controls for phones/tablets
 
 ## Run locally
 
-From this directory, start a tiny web server:
+From the repo root:
 
 ```bash
 python3 -m http.server 8000
@@ -17,6 +28,6 @@ Then open:
 ## Controls
 
 - Move: Arrow keys or WASD
-- Fire: Space or J
+- Fire: Space / J
 - Bomb: B
 - Start / Restart: Enter
