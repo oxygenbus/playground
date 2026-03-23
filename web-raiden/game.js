@@ -48,6 +48,8 @@ images.boss.src = 'assets/images/boss.svg';
 
 const audioCtx = window.AudioContext ? new AudioContext() : null;
 let audioUnlocked = false;
+let musicTimer = 0;
+let musicStep = 0;
 
 const STAGES = [
   {
@@ -232,6 +234,8 @@ function ensureAudio() {
   if (!audioCtx || audioUnlocked) return;
   audioCtx.resume().catch(() => {});
   audioUnlocked = true;
+  musicTimer = 0;
+  musicStep = 0;
 }
 
 function beep({ freq = 440, duration = 0.08, type = 'square', gain = 0.03, slide = 0, detune = 0, when = 0 } = {}) {
@@ -279,6 +283,32 @@ function sfx(name) {
   else if (name === 'warn') { beep({ freq: 220, duration: 0.12, type: 'square', gain: 0.03 }); beep({ freq: 180, duration: 0.12, type: 'square', gain: 0.025, when: 0.15 }); }
   else if (name === 'missile') beep({ freq: 180, duration: 0.12, type: 'sawtooth', gain: 0.025, slide: 120 });
   else if (name === 'bossShot') beep({ freq: 280, duration: 0.1, type: 'square', gain: 0.03, slide: -40 });
+}
+
+function updateMusic(dt) {
+  if (!audioCtx || state.muted || !audioUnlocked || !running || paused || gameOver) return;
+  const stage = state.stage || STAGES[0];
+  const progress = state.boss ? 2 : state.stagePhase === 'miniboss' || state.stagePhase === 'bossIntro' ? 1 : 0;
+  const baseRoots = [196, 220, 247, 262, 175, 185, 208];
+  const root = baseRoots[(stage.id - 1) % baseRoots.length];
+  const patterns = [
+    [0, 7, 12, 7, 3, 7, 10, 7],
+    [0, 5, 8, 12, 5, 8, 10, 8],
+    [0, 3, 7, 10, 3, 7, 12, 7],
+  ];
+  const pattern = patterns[Math.min(progress, patterns.length - 1)];
+  const pulse = progress === 2 ? 0.26 : progress === 1 ? 0.3 : 0.34;
+  musicTimer -= dt;
+  while (musicTimer <= 0) {
+    const interval = pattern[musicStep % pattern.length];
+    const freq = root * Math.pow(2, interval / 12);
+    const accent = musicStep % 4 === 0;
+    beep({ freq, duration: pulse * 0.92, type: accent ? 'triangle' : 'sine', gain: accent ? 0.012 : 0.008, slide: accent ? -8 : 0 });
+    if (accent) beep({ freq: freq / 2, duration: pulse * 0.8, type: 'sine', gain: 0.006, when: 0.01 });
+    if (progress > 0 && musicStep % 2 === 1) beep({ freq: freq * 2, duration: 0.07, type: 'square', gain: 0.0045, when: 0.015 });
+    musicStep += 1;
+    musicTimer += pulse;
+  }
 }
 
 function updateHud() {
@@ -416,7 +446,7 @@ function ring(x, y, color, radius = 20, count = 24) {
 
 function spawnPowerUp(x, y, forcedType = null) {
   const roll = Math.random();
-  const type = forcedType || (roll < 0.34 ? 'power' : roll < 0.58 ? 'bomb' : roll < 0.8 ? 'missile' : roll < 0.9 ? 'weapon' : 'life');
+  const type = forcedType || (roll < 0.4 ? 'power' : roll < 0.68 ? 'bomb' : roll < 0.8 ? 'missile' : roll < 0.92 ? 'weapon' : 'life');
   state.powerUps.push({ x, y, w: 28, h: 28, type, speed: 95, bob: Math.random() * 1000 });
 }
 
@@ -569,7 +599,7 @@ function defeatEnemy(enemy) {
   sfx('explode');
   if (enemy.miniBoss) {
     spawnPowerUp(cx - 18, cy - 16, 'weapon');
-    spawnPowerUp(cx + 14, cy - 20, 'missile');
+    if (Math.random() < 0.55) spawnPowerUp(cx + 14, cy - 20, 'missile');
     spawnPowerUp(cx - 2, cy + 6, 'bomb');
     state.stagePhase = 'bossIntro';
     state.phaseTimer = 2.2;
@@ -602,7 +632,7 @@ function defeatBoss() {
   if (state.stage.id < STAGES.length) state.player.lives = Math.min(5, state.player.lives + 1);
   spawnPowerUp(W / 2 - 50, 160, 'power');
   spawnPowerUp(W / 2 - 12, 180, 'weapon');
-  spawnPowerUp(W / 2 + 24, 150, 'missile');
+  if (Math.random() < 0.45) spawnPowerUp(W / 2 + 24, 150, 'missile');
   pushOverlay(`Stage ${state.stage.id} Clear`, 'Rearming', 2.1, 'stage');
   updateHud();
   updateBossHud();
@@ -648,9 +678,9 @@ function spawnMissiles() {
   const p = state.player;
   if (p.missileLevel <= 0) return;
   const sets = {
-    1: [-18, 18],
-    2: [-22, 22, 0],
-    3: [-26, 26, -8, 8],
+    1: [0],
+    2: [-20, 20],
+    3: [-24, 24, 0],
   };
   (sets[p.missileLevel] || sets[1]).forEach((off, idx) => {
     state.missiles.push({
@@ -658,12 +688,13 @@ function spawnMissiles() {
       y: p.y + 8,
       w: 16,
       h: 24,
-      speed: 290,
-      vx: off === 0 ? 0 : off < 0 ? -72 : 72,
-      armY: p.y - 120,
-      drift: off < 0 ? -0.5 : off > 0 ? 0.5 : 0,
+      speed: 248,
+      vx: off === 0 ? 0 : off < 0 ? -52 : 52,
+      armY: p.y - 150,
+      drift: off < 0 ? -0.3 : off > 0 ? 0.3 : 0,
+      turnRate: 148,
       kind: idx % 2 === 0 ? 'blue' : 'red',
-      damage: 4,
+      damage: 2,
     });
   });
   sfx('missile');
@@ -786,7 +817,7 @@ function applyPowerUp(item) {
     pushOverlay('Bomb Stock', 'Payload replenished', 1.1, 'sub');
   } else if (item.type === 'missile') {
     p.missileLevel = Math.min(3, p.missileLevel + 1);
-    pushOverlay('Missiles Online', 'Tracking support added', 1.1, 'sub');
+    pushOverlay('Missiles Online', 'Limited support salvo added', 1.1, 'sub');
   } else if (item.type === 'weapon') {
     const order = ['pulse', 'spread', 'pierce'];
     p.weapon = order[(order.indexOf(p.weapon) + 1) % order.length];
@@ -921,6 +952,7 @@ function update(dt) {
   p.optionAngle += dt * 2.3;
 
   updateStageFlow(dt);
+  updateMusic(dt);
 
   let dx = 0, dy = 0;
   if (keys.has('arrowleft') || keys.has('a')) dx -= 1;
@@ -941,7 +973,7 @@ function update(dt) {
   }
   if (p.missileLevel > 0 && p.missileCooldown <= 0) {
     spawnMissiles();
-    p.missileCooldown = 0.82 - p.missileLevel * 0.07;
+    p.missileCooldown = Math.max(0.96, 1.45 - p.missileLevel * 0.14);
   }
 
   state.stars.forEach(s => {
@@ -966,21 +998,21 @@ function update(dt) {
       const tx = t.x + t.w / 2;
       const ty = t.y + t.h / 2;
       const d = Math.hypot(tx - m.x, ty - m.y);
-      if (ty < m.y && d < best) { best = d; nearest = t; }
+      if (ty < m.y - 24 && d < best) { best = d; nearest = t; }
     }
     if (m.y > m.armY) {
-      m.y -= m.speed * 0.92 * dt;
+      m.y -= m.speed * 0.88 * dt;
       m.x += m.vx * dt;
-      m.vx *= 0.985;
+      m.vx *= 0.982;
     } else if (nearest) {
       const ax = nearest.x + nearest.w / 2 - m.x;
       const ay = nearest.y + nearest.h / 2 - m.y;
       const d = Math.hypot(ax, ay) || 1;
-      m.x += (ax / d) * 200 * dt;
-      m.y += (ay / d) * 200 * dt;
+      m.x += (ax / d) * m.turnRate * dt;
+      m.y += (ay / d) * (m.turnRate + 18) * dt;
     } else {
       m.y -= m.speed * dt;
-      m.x += m.drift * 30 * dt;
+      m.x += m.drift * 24 * dt;
     }
   });
   state.missiles = state.missiles.filter(m => m.y > -80 && m.x > -60 && m.x < W + 60);
@@ -1083,7 +1115,7 @@ function update(dt) {
       }
     }
     if (!hit && state.boss && state.boss.hp > 0 && intersects(m, state.boss)) {
-      state.boss.hp -= m.damage + 1;
+      state.boss.hp -= m.damage;
       state.boss.hitFlash = 0.16;
       burst(m.x + 8, m.y + 10, '#ffb347', 14, 160);
       shake(5);
