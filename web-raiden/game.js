@@ -58,13 +58,13 @@ const STAGES = [
     terrain: 'islands',
     musicHue: 195,
     waves: [
-      { gap: 0.95, enemies: ['grunt','grunt','zigzag','grunt','grunt','zigzag'] },
-      { gap: 0.9, enemies: ['sweeper','sweeper','zigzag','sweeper','grunt','zigzag'] },
-      { gap: 0.86, enemies: ['turret','grunt','turret','zigzag','sweeper'] },
-      { gap: 0.84, enemies: ['sweeper','zigzag','sweeper','gunship'] },
+      { gap: 1.12, enemies: ['grunt','grunt','zigzag','grunt','zigzag'] },
+      { gap: 1.04, enemies: ['sweeper','grunt','zigzag','sweeper'] },
+      { gap: 0.98, enemies: ['turret','grunt','turret','zigzag'] },
+      { gap: 0.94, enemies: ['sweeper','zigzag','gunship'] },
     ],
     miniboss: { kind: 'gunshipElite', label: 'Aegis Interceptor' },
-    boss: { kind: 'carrier', label: 'Coastbreaker Carrier', hp: 210 },
+    boss: { kind: 'carrier', label: 'Coastbreaker Carrier', hp: 170 },
   },
   {
     id: 2,
@@ -74,13 +74,13 @@ const STAGES = [
     terrain: 'clouds',
     musicHue: 265,
     waves: [
-      { gap: 0.82, enemies: ['zigzag','ace','zigzag','ace','sweeper','ace'] },
-      { gap: 0.8, enemies: ['turret','ace','turret','sweeper','ace'] },
-      { gap: 0.76, enemies: ['gunship','sweeper','gunship','ace'] },
-      { gap: 0.74, enemies: ['ace','ace','zigzag','turret','ace','sweeper'] },
+      { gap: 0.98, enemies: ['zigzag','ace','zigzag','sweeper','ace'] },
+      { gap: 0.94, enemies: ['turret','ace','sweeper','ace'] },
+      { gap: 0.9, enemies: ['gunship','sweeper','ace'] },
+      { gap: 0.86, enemies: ['ace','zigzag','turret','ace','sweeper'] },
     ],
     miniboss: { kind: 'stormCore', label: 'Tempest Core' },
-    boss: { kind: 'dreadnought', label: 'Storm Dreadnought', hp: 260 },
+    boss: { kind: 'dreadnought', label: 'Storm Dreadnought', hp: 215 },
   },
   {
     id: 3,
@@ -90,13 +90,13 @@ const STAGES = [
     terrain: 'lava',
     musicHue: 15,
     waves: [
-      { gap: 0.72, enemies: ['ace','sweeper','ace','gunship','ace','zigzag'] },
-      { gap: 0.7, enemies: ['turret','turret','gunship','ace','sweeper'] },
-      { gap: 0.66, enemies: ['gunship','ace','gunship','ace','turret'] },
-      { gap: 0.62, enemies: ['ace','ace','sweeper','turret','gunship','ace'] },
+      { gap: 0.9, enemies: ['ace','sweeper','ace','gunship','zigzag'] },
+      { gap: 0.86, enemies: ['turret','gunship','ace','sweeper'] },
+      { gap: 0.82, enemies: ['gunship','ace','turret'] },
+      { gap: 0.78, enemies: ['ace','sweeper','turret','gunship','ace'] },
     ],
     miniboss: { kind: 'forgeEye', label: 'Forge Eye' },
-    boss: { kind: 'overlord', label: 'Iron Overlord', hp: 330 },
+    boss: { kind: 'overlord', label: 'Iron Overlord', hp: 275 },
   },
 ];
 
@@ -139,6 +139,10 @@ function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 function lerp(a, b, t) { return a + (b - a) * t; }
 function intersects(a, b) {
   return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+}
+function playerHitbox() {
+  const p = state.player;
+  return { x: p.x + 14, y: p.y + 10, w: p.w - 28, h: p.h - 22 };
 }
 
 function currentStage() {
@@ -252,12 +256,12 @@ function resetGame() {
     y: H - 110,
     w: 48,
     h: 48,
-    speed: 305,
+    speed: 325,
     cooldown: 0,
     missileCooldown: 0,
     invuln: 0,
-    lives: 3,
-    bombs: 2,
+    lives: 4,
+    bombs: 3,
     power: 1,
     missileLevel: 0,
     weapon: 'pulse',
@@ -342,21 +346,21 @@ function ring(x, y, color, radius = 20, count = 24) {
 
 function spawnPowerUp(x, y, forcedType = null) {
   const roll = Math.random();
-  const type = forcedType || (roll < 0.36 ? 'power' : roll < 0.58 ? 'bomb' : roll < 0.8 ? 'missile' : roll < 0.92 ? 'weapon' : 'life');
-  state.powerUps.push({ x, y, w: 26, h: 26, type, speed: 115, bob: Math.random() * 1000 });
+  const type = forcedType || (roll < 0.34 ? 'power' : roll < 0.58 ? 'bomb' : roll < 0.8 ? 'missile' : roll < 0.9 ? 'weapon' : 'life');
+  state.powerUps.push({ x, y, w: 28, h: 28, type, speed: 95, bob: Math.random() * 1000 });
 }
 
 function enemyBase(kind, x = rand(20, W - 60), y = -60) {
   const bases = {
-    grunt: { w: 42, h: 42, speed: 118, hp: 3, score: 90, fire: 1.8, sprite: 'enemy' },
-    zigzag: { w: 42, h: 42, speed: 132, hp: 4, score: 130, fire: 1.45, sprite: 'enemyAlt' },
-    sweeper: { w: 48, h: 48, speed: 150, hp: 5, score: 160, fire: 1.25, sprite: 'enemyAlt' },
-    turret: { w: 58, h: 58, speed: 72, hp: 9, score: 220, fire: 1.8, sprite: 'enemyTurret' },
-    ace: { w: 50, h: 50, speed: 156, hp: 6, score: 200, fire: 1.08, sprite: 'enemyAlt' },
-    gunship: { w: 70, h: 62, speed: 84, hp: 18, score: 420, fire: 1.25, sprite: 'boss' },
-    gunshipElite: { w: 92, h: 82, speed: 82, hp: 80, score: 1800, fire: 0.8, sprite: 'boss', miniBoss: true },
-    stormCore: { w: 98, h: 98, speed: 74, hp: 95, score: 2200, fire: 0.72, sprite: 'boss', miniBoss: true },
-    forgeEye: { w: 104, h: 100, speed: 76, hp: 110, score: 2600, fire: 0.7, sprite: 'boss', miniBoss: true },
+    grunt: { w: 42, h: 42, speed: 108, hp: 2, score: 90, fire: 2.25, sprite: 'enemy' },
+    zigzag: { w: 42, h: 42, speed: 120, hp: 3, score: 130, fire: 1.8, sprite: 'enemyAlt' },
+    sweeper: { w: 48, h: 48, speed: 132, hp: 4, score: 160, fire: 1.65, sprite: 'enemyAlt' },
+    turret: { w: 58, h: 58, speed: 62, hp: 7, score: 220, fire: 2.2, sprite: 'enemyTurret' },
+    ace: { w: 50, h: 50, speed: 142, hp: 5, score: 200, fire: 1.42, sprite: 'enemyAlt' },
+    gunship: { w: 70, h: 62, speed: 76, hp: 14, score: 420, fire: 1.55, sprite: 'boss' },
+    gunshipElite: { w: 92, h: 82, speed: 74, hp: 58, score: 1800, fire: 1.02, sprite: 'boss', miniBoss: true },
+    stormCore: { w: 98, h: 98, speed: 68, hp: 74, score: 2200, fire: 0.96, sprite: 'boss', miniBoss: true },
+    forgeEye: { w: 104, h: 100, speed: 70, hp: 88, score: 2600, fire: 0.92, sprite: 'boss', miniBoss: true },
   };
   const base = bases[kind];
   return {
@@ -384,8 +388,8 @@ function spawnEnemy(kind, x = rand(20, W - 60), y = -60) {
 function queueWave(index) {
   const wave = state.stage.waves[index];
   state.queuedWave = wave ? [...wave.enemies] : null;
-  state.waveGap = wave?.gap ?? 0.75;
-  state.waveSpawnTimer = 0.15;
+  state.waveGap = wave?.gap ?? 0.9;
+  state.waveSpawnTimer = 0.2;
 }
 
 function startNextStage() {
@@ -444,12 +448,13 @@ function defeatEnemy(enemy) {
   flash(enemy.miniBoss ? 0.18 : 0.06);
   sfx('explode');
   if (enemy.miniBoss) {
-    spawnPowerUp(cx - 12, cy - 12, 'weapon');
-    spawnPowerUp(cx + 16, cy - 18, 'missile');
+    spawnPowerUp(cx - 18, cy - 16, 'weapon');
+    spawnPowerUp(cx + 14, cy - 20, 'missile');
+    spawnPowerUp(cx - 2, cy + 6, 'bomb');
     state.stagePhase = 'bossIntro';
     state.phaseTimer = 2.2;
     pushOverlay('Route Clear', 'Main hostile incoming', 1.8, 'stage');
-  } else if (Math.random() < 0.18 || enemy.kind === 'gunship') {
+  } else if (Math.random() < 0.32 || enemy.kind === 'gunship') {
     spawnPowerUp(cx - 12, cy - 12);
   }
   updateHud();
@@ -474,7 +479,7 @@ function defeatBoss() {
   state.phaseTimer = 2.8;
   state.stagePhase = 'stageClear';
   state.player.bombs = Math.min(5, state.player.bombs + 1);
-  state.player.lives = Math.min(5, state.player.lives + (state.stage.id === STAGES.length ? 0 : 0));
+  if (state.stage.id < STAGES.length) state.player.lives = Math.min(5, state.player.lives + 1);
   spawnPowerUp(W / 2 - 50, 160, 'power');
   spawnPowerUp(W / 2 - 12, 180, 'weapon');
   spawnPowerUp(W / 2 + 24, 150, 'missile');
@@ -593,10 +598,10 @@ function hitPlayer() {
   const p = state.player;
   if (!p || p.invuln > 0) return;
   p.lives -= 1;
-  p.invuln = 2.2;
-  p.power = Math.max(1, p.power - 1);
-  p.missileLevel = Math.max(0, p.missileLevel - 1);
-  if (p.weapon !== 'pulse' && Math.random() < 0.5) p.weapon = 'pulse';
+  p.invuln = 3.2;
+  p.power = Math.max(1, p.power - (p.power >= 4 ? 1 : 0));
+  p.missileLevel = Math.max(0, p.missileLevel - (p.missileLevel >= 2 ? 1 : 0));
+  if (p.weapon !== 'pulse' && Math.random() < 0.25) p.weapon = 'pulse';
   burst(p.x + p.w / 2, p.y + p.h / 2, '#ff7a7a', 28, 280, 80);
   ring(p.x + p.w / 2, p.y + p.h / 2, '#ffd0d0', 28, 22);
   flash(0.22);
@@ -676,13 +681,13 @@ function bossBehavior(dt) {
     b.fireCooldown -= dt;
     b.altCooldown -= dt;
     if (b.fireCooldown <= 0) {
-      aimedShot(b, 180, 0.16, 5, '#ff8c69');
-      b.fireCooldown = 1.05;
+      aimedShot(b, 150, 0.12, 4, '#ff8c69');
+      b.fireCooldown = 1.22;
       sfx('bossShot');
     }
     if (b.altCooldown <= 0) {
-      radialShot(b, 12, 135, '#a77bff');
-      b.altCooldown = 2.8;
+      radialShot(b, 10, 118, '#a77bff');
+      b.altCooldown = 3.2;
       sfx('bossShot');
     }
   } else if (b.kind === 'dreadnought') {
@@ -690,13 +695,13 @@ function bossBehavior(dt) {
     b.fireCooldown -= dt;
     b.altCooldown -= dt;
     if (b.fireCooldown <= 0) {
-      aimedShot(b, 215, 0.11, 7, '#ff5f7a');
-      b.fireCooldown = 0.92;
+      aimedShot(b, 175, 0.09, 5, '#ff5f7a');
+      b.fireCooldown = 1.08;
       sfx('bossShot');
     }
     if (b.altCooldown <= 0) {
-      radialShot(b, 16, 155, '#ffd166');
-      b.altCooldown = 2.45;
+      radialShot(b, 12, 132, '#ffd166');
+      b.altCooldown = 2.9;
       sfx('bossShot');
     }
   } else if (b.kind === 'overlord') {
@@ -704,17 +709,17 @@ function bossBehavior(dt) {
     b.fireCooldown -= dt;
     b.altCooldown -= dt;
     if (b.fireCooldown <= 0) {
-      aimedShot(b, 235, 0.08, 9, '#ff6b9b');
-      b.fireCooldown = 0.78;
+      aimedShot(b, 192, 0.06, 6, '#ff6b9b');
+      b.fireCooldown = 0.98;
       sfx('bossShot');
     }
     if (b.altCooldown <= 0) {
-      radialShot(b, 18, 175, '#ffb347');
-      b.altCooldown = 1.95;
+      radialShot(b, 14, 145, '#ffb347');
+      b.altCooldown = 2.35;
       sfx('bossShot');
     }
   }
-  if (intersects(b, state.player)) hitPlayer();
+  if (intersects(b, playerHitbox())) hitPlayer();
 }
 
 function updateStageFlow(dt) {
@@ -795,11 +800,11 @@ function update(dt) {
   const wantsFire = keys.has(' ') || keys.has('j') || firingTouch;
   if (wantsFire && p.cooldown <= 0) {
     shootPlayer();
-    p.cooldown = p.weapon === 'pierce' ? 0.24 : 0.14;
+    p.cooldown = p.weapon === 'pierce' ? 0.22 : 0.13;
   }
   if (p.missileLevel > 0 && p.missileCooldown <= 0) {
     spawnMissiles();
-    p.missileCooldown = 0.92 - p.missileLevel * 0.07;
+    p.missileCooldown = 0.82 - p.missileLevel * 0.07;
   }
 
   state.stars.forEach(s => {
@@ -843,10 +848,11 @@ function update(dt) {
   });
   state.missiles = state.missiles.filter(m => m.y > -80 && m.x > -60 && m.x < W + 60);
 
+  const pHitbox = playerHitbox();
   state.enemyBullets.forEach(b => {
     b.x += b.vx * dt;
     b.y += b.vy * dt;
-    if (intersects(b, p)) {
+    if (intersects(b, pHitbox)) {
       b.y = H + 200;
       hitPlayer();
     }
@@ -878,21 +884,24 @@ function update(dt) {
     }
 
     if (enemy.fireCooldown <= 0 && enemy.y > 24) {
-      if (enemy.kind === 'turret') aimedShot(enemy, 165, 0.18, 5, '#ff9f43');
-      else if (enemy.kind === 'ace') aimedShot(enemy, 205, 0.09, 3, '#ff5f7a');
-      else if (enemy.kind === 'sweeper') aimedShot(enemy, 175, 0.3, 3, '#a77bff');
-      else if (enemy.kind === 'gunship') radialShot(enemy, 8, 135, '#ff9f43');
-      else if (enemy.kind === 'gunshipElite') { aimedShot(enemy, 190, 0.18, 7, '#ff5f7a'); radialShot(enemy, 10, 120, '#ffd166'); }
-      else if (enemy.kind === 'stormCore') { radialShot(enemy, 14, 148, '#a77bff'); aimedShot(enemy, 200, 0.08, 5, '#ff6b9b'); }
-      else if (enemy.kind === 'forgeEye') { radialShot(enemy, 16, 165, '#ff9f43'); aimedShot(enemy, 215, 0.06, 7, '#ff5f7a'); }
-      else aimedShot(enemy, 175, 0, 1, '#9b6bff');
-      enemy.fireCooldown = enemy.miniBoss ? rand(0.65, 1.1) : enemy.kind === 'gunship' ? 1.5 : rand(1.0, 2.1);
+      if (enemy.kind === 'turret') aimedShot(enemy, 140, 0.16, 3, '#ff9f43');
+      else if (enemy.kind === 'ace') aimedShot(enemy, 175, 0.08, 2, '#ff5f7a');
+      else if (enemy.kind === 'sweeper') aimedShot(enemy, 152, 0.22, 2, '#a77bff');
+      else if (enemy.kind === 'gunship') radialShot(enemy, 6, 118, '#ff9f43');
+      else if (enemy.kind === 'gunshipElite') { aimedShot(enemy, 165, 0.15, 5, '#ff5f7a'); radialShot(enemy, 8, 108, '#ffd166'); }
+      else if (enemy.kind === 'stormCore') { radialShot(enemy, 10, 126, '#a77bff'); aimedShot(enemy, 172, 0.07, 4, '#ff6b9b'); }
+      else if (enemy.kind === 'forgeEye') { radialShot(enemy, 12, 138, '#ff9f43'); aimedShot(enemy, 182, 0.05, 5, '#ff5f7a'); }
+      else aimedShot(enemy, 150, 0, 1, '#9b6bff');
+      enemy.fireCooldown = enemy.miniBoss ? rand(0.95, 1.45) : enemy.kind === 'gunship' ? 1.9 : rand(1.4, 2.6);
       sfx('bossShot');
     }
 
-    if (intersects(enemy, p)) {
-      enemy.hp = 0;
+    if (intersects(enemy, pHitbox)) {
+      if (!enemy.miniBoss && enemy.kind !== 'gunship') enemy.hp = 0;
+      else enemy.hp -= enemy.miniBoss ? 12 : 8;
+      enemy.hitFlash = 0.2;
       hitPlayer();
+      if (enemy.hp <= 0) defeatEnemy(enemy);
     }
   });
 
@@ -984,6 +993,13 @@ function drawTerrain() {
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
 
+  const glow = ctx.createRadialGradient(W * 0.5, H * 0.2, 40, W * 0.5, H * 0.35, H * 0.9);
+  glow.addColorStop(0, 'rgba(255,255,255,0.08)');
+  glow.addColorStop(0.45, 'rgba(100,180,255,0.05)');
+  glow.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, W, H);
+
   if (state.stage.terrain === 'islands') {
     ctx.fillStyle = 'rgba(38, 110, 72, 0.24)';
     for (let i = 0; i < 6; i++) {
@@ -1023,7 +1039,18 @@ function drawTerrain() {
     }
   }
 
+  for (let i = 0; i < 3; i++) {
+    const bandY = (i * 210 + state.terrainOffset * (0.22 + i * 0.05)) % (H + 180) - 120;
+    const band = ctx.createLinearGradient(0, bandY, 0, bandY + 120);
+    band.addColorStop(0, 'rgba(255,255,255,0)');
+    band.addColorStop(0.5, state.stage.id === 3 ? 'rgba(255,150,90,0.08)' : state.stage.id === 2 ? 'rgba(170,180,255,0.08)' : 'rgba(110,255,220,0.07)');
+    band.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = band;
+    ctx.fillRect(0, bandY, W, 120);
+  }
+
   ctx.strokeStyle = 'rgba(180,220,255,0.05)';
+  ctx.lineWidth = 1;
   for (let y = 0; y < H; y += 56) {
     const py = (y + state.terrainOffset * 0.7) % (H + 56);
     ctx.beginPath();
