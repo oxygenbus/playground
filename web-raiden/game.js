@@ -33,8 +33,8 @@ const images = {
   enemy: new Image(),
   star: new Image(),
 };
-images.player.src = 'assets/images/player.svg';
-images.enemy.src = 'assets/images/enemy.svg';
+images.player.src = 'assets/images/player.png';
+images.enemy.src = 'assets/images/enemy.png';
 images.star.src = 'assets/images/star.svg';
 
 const HIGH_KEY = 'skyraid-highscore';
@@ -81,7 +81,7 @@ function resetGame() {
     y: H - 120,
     w: 48,
     h: 48,
-    speed: 340,
+    speed: 285,
     cooldown: 0,
     lives: 3,
     bombs: 2,
@@ -163,7 +163,7 @@ function spawnEnemy() {
     y: -size,
     w: size,
     h: size,
-    speed: rand(120, 190) + wave * 8,
+    speed: rand(78, 125) + wave * 5,
     hp: type === 'turret' ? 8 : type === 'zigzag' ? 4 : 2,
     maxHp: type === 'turret' ? 8 : type === 'zigzag' ? 4 : 2,
     phase: Math.random() * Math.PI * 2,
@@ -208,11 +208,11 @@ function shootEnemy(enemy, pattern = 'single') {
   const cx = enemy.x + enemy.w / 2;
   const cy = enemy.y + enemy.h - 4;
   if (pattern === 'spread') {
-    [-120, -60, 0, 60, 120].forEach(vx => state.enemyBullets.push({ x: cx, y: cy, w: 8, h: 12, vx, vy: 220, color: '#ff9f43' }));
+    [-120, -60, 0, 60, 120].forEach(vx => state.enemyBullets.push({ x: cx, y: cy, w: 8, h: 12, vx: vx * 0.72, vy: 165, color: '#ff9f43' }));
   } else if (pattern === 'fan') {
-    [-140, -70, 0, 70, 140].forEach(vx => state.enemyBullets.push({ x: cx, y: cy, w: 8, h: 14, vx, vy: 280, color: '#ff5f7a' }));
+    [-140, -70, 0, 70, 140].forEach(vx => state.enemyBullets.push({ x: cx, y: cy, w: 8, h: 14, vx: vx * 0.68, vy: 195, color: '#ff5f7a' }));
   } else {
-    state.enemyBullets.push({ x: cx, y: cy, w: 8, h: 14, vx: 0, vy: 260, color: '#ff5f7a' });
+    state.enemyBullets.push({ x: cx, y: cy, w: 8, h: 14, vx: 0, vy: 185, color: '#ff5f7a' });
   }
 }
 
@@ -304,7 +304,7 @@ function update(dt) {
     state.spawnTimer -= dt;
     if (state.spawnTimer <= 0) {
       spawnEnemy();
-      state.spawnTimer = Math.max(0.28, 0.85 - state.wave * 0.03) + Math.random() * 0.25;
+      state.spawnTimer = Math.max(0.52, 1.05 - state.wave * 0.02) + Math.random() * 0.32;
     }
   }
 
@@ -336,7 +336,7 @@ function update(dt) {
     enemy.fireCooldown -= dt;
     if (enemy.fireCooldown <= 0 && enemy.y > 40) {
       shootEnemy(enemy, enemy.kind === 'turret' ? 'spread' : 'single');
-      enemy.fireCooldown = enemy.kind === 'turret' ? 1.4 : rand(1.2, 2.4);
+      enemy.fireCooldown = enemy.kind === 'turret' ? 1.85 : rand(1.6, 2.8);
     }
     if (intersects(enemy, p)) {
       enemy.hp = 0;
@@ -353,11 +353,11 @@ function update(dt) {
       if (b.y >= 40) b.enter = false;
     } else {
       b.phase += dt;
-      b.x = W / 2 - b.w / 2 + Math.sin(b.phase * 1.1) * 120;
+      b.x = W / 2 - b.w / 2 + Math.sin(b.phase * 0.9) * 85;
       b.fireCooldown -= dt;
       if (b.fireCooldown <= 0) {
         shootEnemy(b, Math.random() < 0.5 ? 'fan' : 'spread');
-        b.fireCooldown = 0.9;
+        b.fireCooldown = 1.15;
       }
     }
   }
