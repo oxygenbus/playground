@@ -497,10 +497,12 @@ function draw() {
   }
 
   const p = state.player;
-  ctx.save();
-  if (p.invuln > 0) ctx.globalAlpha = 0.45 + Math.sin(performance.now() / 40) * 0.25;
-  drawShip(p, images.player, '#64f0ff');
-  ctx.restore();
+  if (p) {
+    ctx.save();
+    if (p.invuln > 0) ctx.globalAlpha = 0.45 + Math.sin(performance.now() / 40) * 0.25;
+    drawShip(p, images.player, '#64f0ff');
+    ctx.restore();
+  }
 
   state.particles.forEach(pt => {
     ctx.globalAlpha = Math.max(pt.life, 0);
