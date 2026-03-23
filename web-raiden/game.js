@@ -178,8 +178,8 @@ function spawnBoss() {
     y: -140,
     w: 140,
     h: 120,
-    hp: 220,
-    maxHp: 220,
+    hp: 90,
+    maxHp: 90,
     phase: 0,
     fireCooldown: 0.8,
     enter: true,
@@ -226,7 +226,7 @@ function bomb() {
     explode(e.x + e.w / 2, e.y + e.h / 2, '#64f0ff', 15);
   });
   if (state.boss) {
-    state.boss.hp -= 45;
+    state.boss.hp -= 35;
     explode(state.boss.x + state.boss.w / 2, state.boss.y + state.boss.h / 2, '#ffb347', 36, 300);
   }
   playSound('boom');
@@ -445,9 +445,17 @@ function drawBackground() {
   });
 }
 
-function drawShip(obj, image, fallbackColor) {
+function drawShip(obj, image, fallbackColor, rotation = 0) {
   if (image.complete && image.naturalWidth) {
-    ctx.drawImage(image, obj.x, obj.y, obj.w, obj.h);
+    if (rotation !== 0) {
+      ctx.save();
+      ctx.translate(obj.x + obj.w / 2, obj.y + obj.h / 2);
+      ctx.rotate(rotation);
+      ctx.drawImage(image, -obj.w / 2, -obj.h / 2, obj.w, obj.h);
+      ctx.restore();
+    } else {
+      ctx.drawImage(image, obj.x, obj.y, obj.w, obj.h);
+    }
   } else {
     ctx.fillStyle = fallbackColor;
     ctx.beginPath();
@@ -505,7 +513,7 @@ function draw() {
   if (p) {
     ctx.save();
     if (p.invuln > 0) ctx.globalAlpha = 0.45 + Math.sin(performance.now() / 40) * 0.25;
-    drawShip(p, images.player, '#64f0ff');
+    drawShip(p, images.player, '#64f0ff', -Math.PI / 4);
     ctx.restore();
   }
 
