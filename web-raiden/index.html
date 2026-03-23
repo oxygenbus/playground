@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sky Raid</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="hud">
+    <div><strong>Sky Raid</strong></div>
+    <div>Score: <span id="score">0</span></div>
+    <div>Lives: <span id="lives">3</span></div>
+    <div>Bombs: <span id="bombs">2</span></div>
+  </div>
+  <canvas id="game" width="480" height="720"></canvas>
+  <div class="overlay" id="overlay">
+    <div class="panel">
+      <h1>Sky Raid</h1>
+      <p>Arrow keys / WASD to move</p>
+      <p>Space to fire • B to bomb</p>
+      <p>Press Enter to start</p>
+    </div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
